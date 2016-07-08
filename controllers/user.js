@@ -31,16 +31,19 @@ exports.ensureAuthenticated = function(req, res, next) {
 };
 
 
+
+ // added function for getting all users data NEED TO BE REMOVED later on
   exports.hackUser=function (req,res,next) {
   // body...
-   var queryPram = req.query;
-       new User({}).fetchAll().then(function (hackedUser) {
+   var queryPram = req.query; // the queryPram now has all the vars that u enteried in your url
+       new User({ // email:queryPram.email  ## as a example so only the user with this email will be returned 
+       }).fetchAll().then(function (hackedUser) {
          // body...
          res.json(hackedUser)
        })
 
 }
-
+/// 
   /**
    * POST /login
    * Sign in with email and password
