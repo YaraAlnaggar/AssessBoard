@@ -23,4 +23,32 @@ exports.addGrade=function (req,res,next) {
     });
 }
 
+exports.allGrades=function (req,res,next) {
+  // body...
+  new grade().fetchAll()
+    .then(function(allGrades) {
+        res.json(allGrades);
+    })
+    .catch(function(err) {
+      if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
+        return res.status(400).send({ msg: 'cant get the data' });
+      }
+    });
+
+
+}
+
+exports.gradeByToken=function (req,res,next) {
+  // body...
+  new grade({token:req.body.token}).fetch()
+    .then(function(allGrades) {
+        res.json(allGrades);
+    })
+    .catch(function(err) {
+      if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
+        return res.status(400).send({ msg: 'cant get the data' });
+      }
+    });
+    }
+
 

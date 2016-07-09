@@ -33,13 +33,13 @@ exports.ensureAuthenticated = function(req, res, next) {
 
 
  // added function for getting all users data NEED TO BE REMOVED later on
-  exports.hackUser=function (req,res) {
+  exports.allUsers=function (req,res) {
   // body...
    var queryPram = req.query; // the queryPram now has all the vars that u enteried in your url
        new User({ // email:queryPram.email  ## as a example so only the user with this email will be returned 
-       }).fetchAll().then(function (hackedUser) {
+       }).fetchAll().then(function (allUsersData) {
          // body...
-         res.json(hackedUser)
+         res.json(allUsersData)
        })
 
 }

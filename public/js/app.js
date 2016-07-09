@@ -10,6 +10,11 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
         templateUrl: 'partials/contact.html',
         controller: 'ContactCtrl'
       })
+      .when('/viewData', {
+        templateUrl: 'partials/grades.html',
+        controller: 'oneDataCtrl',
+        resolve: { loginRequired: loginRequired }
+      })
       .when('/login', {
         templateUrl: 'partials/login.html',
         controller: 'LoginCtrl',

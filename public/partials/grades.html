@@ -1,0 +1,18 @@
+<div class="container login-container">
+  <div class="panel">
+    <div class="panel-body">
+      <div ng-if="messages.error" role="alert" class="alert alert-danger">
+        <div ng-repeat="error in messages.error">{{error.msg}}</div>
+      </div>
+      <form ng-submit="FetchData()">
+        <legend>Get data </legend>
+        <div class="form-group">
+          <label for="name">User</label>
+          <input type="text" name="name" id="name" placeholder="token" class="form-control" ng-model="user.token" autofocus>
+        </div>
+        <button type="submit" class="btn btn-success">Search</button>
+      </form>
+      <div class="hr-title"><span>By the Hodz</span></div>
+    </div>
+  </div>
+</div>
