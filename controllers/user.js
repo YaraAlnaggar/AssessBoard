@@ -24,7 +24,7 @@ function generateToken(user) {
  */
 exports.ensureAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) {
-    next();
+    next()
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
@@ -33,7 +33,7 @@ exports.ensureAuthenticated = function(req, res, next) {
 
 
  // added function for getting all users data NEED TO BE REMOVED later on
-  exports.hackUser=function (req,res,next) {
+  exports.hackUser=function (req,res) {
   // body...
    var queryPram = req.query; // the queryPram now has all the vars that u enteried in your url
        new User({ // email:queryPram.email  ## as a example so only the user with this email will be returned 

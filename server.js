@@ -15,9 +15,11 @@ dotenv.load();
 
 // Models
 var User = require('./models/User');
+var Grade =require('./models/Grades')
 
 // Controllers
 var userController = require('./controllers/user');
+var gradeController = require('./controllers/grades');
 var contactController = require('./controllers/contact');
 
 var app = express();
@@ -34,9 +36,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
   req.isAuthenticated = function() {
     var token = (req.headers.authorization && req.headers.authorization.split(' ')[1]) || req.cookies.token;
+    console.log("token :: "+token)
     try {
       return jwt.verify(token, process.env.TOKEN_SECRET);
     } catch (err) {
+      console.log(err)
       return false;
     }
   };
@@ -66,7 +70,10 @@ app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
-app.get('/loginHackData',userController.hackUser) // the added route for loading all the data from the database
+app.get('/GetData',
+userController.ensureAuthenticated,
+userController.hackUser); // the added route for loading all the data from the database
+app.post('/grades/add',userController.ensureAuthenticated,gradeController.addGrade); // add grades to user
 
 app.get('*', function(req, res) {
   res.redirect('/#' + req.originalUrl);
