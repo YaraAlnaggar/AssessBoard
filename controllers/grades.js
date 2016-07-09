@@ -6,13 +6,13 @@ var moment = require('moment');
 var request = require('request');
 var qs = require('querystring');
 var bodyParser = require('body-parser');
-var Grade = require('../models/Grades');
+var grade = require('../models/grade');
 
 exports.addGrade=function (req,res,next) {
   // body...
    var body = req.body
-
-  new Grade(body).save()
+   console.log(body)
+  new grade(body).save()
     .then(function(user) {
         res.send("success");
     })

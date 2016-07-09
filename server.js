@@ -15,7 +15,7 @@ dotenv.load();
 
 // Models
 var User = require('./models/User');
-var Grade =require('./models/Grades')
+var Grade =require('./models/grade')
 
 // Controllers
 var userController = require('./controllers/user');
@@ -36,7 +36,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(function(req, res, next) {
   req.isAuthenticated = function() {
     var token = (req.headers.authorization && req.headers.authorization.split(' ')[1]) || req.cookies.token;
-    console.log("token :: "+token)
+    //console.log("token :: "+token)
     try {
       return jwt.verify(token, process.env.TOKEN_SECRET);
     } catch (err) {

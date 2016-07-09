@@ -7,7 +7,7 @@ exports.up = function(knex, Promise) {
       table.string('email').unique();
       table.string('Grade');
       table.string('Field');
-      table.dateTime('Acceptence');
+      table.string('Acceptence');
       table.string('gender');
       table.string('relevents');
       table.string('previous expernice');
