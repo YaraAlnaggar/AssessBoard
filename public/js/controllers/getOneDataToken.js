@@ -5,6 +5,7 @@ angular.module('MyApp')
     $scope.FetchData = function() {
       viewData.getDataByToken($scope.user)
         .then(function(response) {
+          $scope.returnedData=JSON.stringify(response.data);
           console.log(JSON.stringify(response.data));
           $scope.messages = {
             success: [response.data]
