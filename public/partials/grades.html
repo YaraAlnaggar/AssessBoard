@@ -10,8 +10,12 @@
           <label for="name">User</label>
           <input type="text" name="name" id="name" placeholder="token" class="form-control" ng-model="user.token" autofocus>
         </div>
-          <p ng-bind="returnedData"></p>
-
+        <div ng-show="showDataTokenBy">
+          <h1>all the data </h1><p ng-bind="returnedDataString"></p>
+          <h1>the token </h1><p ng-bind="returnedData.token"></p>
+          <h1>email </h1><p ng-bind="returnedData.email"></p>
+          <h1>the name </h1><p ng-bind="returnedData.name"></p>
+          </div>
         <button type="submit" class="btn btn-success">Search</button>
       </form>
       <div class="hr-title"><span>By the Hodz</span></div>
