@@ -70,10 +70,12 @@ app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
-app.get('/GetAllGrades',userController.ensureAuthenticated,gradeController.allGrades); // the added route for loading all the data from the database
+app.get('/GetAllGrades'//,userController.ensureAuthenticated
+,gradeController.allGrades); // the added route for loading all the data from the database
 app.post('/GetBytoken'//,userController.ensureAuthenticated
 ,gradeController.gradeByToken); // get the data using the token
-app.post('/grades/add',userController.ensureAuthenticated,gradeController.addGrade); // add grades to user
+app.post('/grades/add'//,userController.ensureAuthenticated
+,gradeController.addGrade); // add grades to user
 
 app.get('*', function(req, res) {
   res.redirect('/#' + req.originalUrl);
