@@ -12,7 +12,7 @@ function generateToken(user) {
     iss: 'my.domain.com',
     sub: user.id,
     iat: moment().unix(),
-    exp: moment().add(7, 'days').unix()
+    exp: moment().add(1, 'days').unix()
   };
   return jwt.sign(payload, process.env.TOKEN_SECRET);
 }
@@ -99,6 +99,7 @@ exports.signupPost = function(req, res, next) {
     password: req.body.password
   }).save()
     .then(function(user) {
+        console.log("send token was reached in backend")
         res.send({ token: generateToken(user), user: user });
     })
     .catch(function(err) {
