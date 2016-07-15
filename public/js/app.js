@@ -13,8 +13,8 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       .when('/viewData', {
         templateUrl: 'partials/grades.html',
         controller: 'oneDataCtrl',
-        resolve: { skipIfAuthenticated: skipIfAuthenticated }
-        //resolve: { loginRequired: loginRequired }
+        //resolve: { skipIfAuthenticated: skipIfAuthenticated }
+        resolve: { loginRequired: loginRequired }
       })
       .when('/login', {
         templateUrl: 'partials/login.html',
