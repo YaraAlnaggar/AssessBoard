@@ -1,5 +1,5 @@
 angular.module('MyApp')
-  .controller('oneDataCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
+  .controller('reportCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
     $scope.profile = $rootScope.currentUser;
 
     $scope.FetchData = function() {

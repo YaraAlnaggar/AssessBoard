@@ -8,11 +8,23 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       })
       .when('/contact', {
         templateUrl: 'partials/contact.html',
-        controller: 'ContactCtrl'
+        controller: 'ContactCtrl',
       })
-      .when('/viewData', {
-        templateUrl: 'partials/grades.html',
-        controller: 'oneDataCtrl',
+      .when('/orderHistory', {
+        templateUrl: 'partials/orderHistory.html',
+        controller: 'orderHistoryCtrl',
+        //resolve: { skipIfAuthenticated: skipIfAuthenticated }
+        resolve: { loginRequired: loginRequired }
+      })
+      .when('/launcher', {
+        templateUrl: 'partials/launcher.html',
+        controller: 'launcherCtrl',
+        //resolve: { skipIfAuthenticated: skipIfAuthenticated }
+        resolve: { loginRequired: loginRequired }
+      })
+      .when('/report', {
+        templateUrl: 'partials/report.html',
+        controller: 'reportCtrl',
         //resolve: { skipIfAuthenticated: skipIfAuthenticated }
         resolve: { loginRequired: loginRequired }
       })
