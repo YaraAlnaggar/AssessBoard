@@ -21,6 +21,8 @@ var Grade =require('./models/grade')
 var userController = require('./controllers/user');
 var gradeController = require('./controllers/grades');
 var contactController = require('./controllers/contact');
+var personalityPlusController = require('./controllers/personalityPlusController');
+
 
 var app = express();
 
@@ -73,7 +75,7 @@ app.get('/auth/google/callback', userController.authGoogleCallback);
 app.get('/GetAllGrades',userController.ensureAuthenticated
 ,gradeController.allGrades); // the added route for loading all the data from the database
 app.post('/GetBytoken',userController.ensureAuthenticated  //  REMOVED FOR THE FREE HEROKU
-,gradeController.gradeByToken); // get the data using the token  //  REMOVED FOR THE FREE HEROKU
+,personalityPlusController.showpersonalityPlusBytoken); // get the data using the token  //  REMOVED FOR THE FREE HEROKU
 app.post('/grades/add',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
 ,gradeController.addGrade); // add grades to user
 
