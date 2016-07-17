@@ -16,6 +16,11 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
         //resolve: { skipIfAuthenticated: skipIfAuthenticated }
         resolve: { loginRequired: loginRequired }
       })
+        .when('/userProfile', {
+        templateUrl: 'partials/userProfile.html',
+        controller: 'userProfileCtrl',
+        resolve: { loginRequired: loginRequired }
+      })
       .when('/login', {
         templateUrl: 'partials/login.html',
         controller: 'LoginCtrl',
