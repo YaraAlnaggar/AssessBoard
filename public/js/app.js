@@ -12,21 +12,18 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       })
       .when('/orderHistory', {
         templateUrl: 'partials/orderHistory.html',
-        controller: 'orderHistoryCtrl',
-        //resolve: { skipIfAuthenticated: skipIfAuthenticated }
-        resolve: { loginRequired: loginRequired }
+        controller: 'orderHistoryCtrl',  
+         resolve: { loginRequired: loginRequiredAdmin }
       })
       .when('/launcher', {
         templateUrl: 'partials/launcher.html',
         controller: 'launcherCtrl',
-        //resolve: { skipIfAuthenticated: skipIfAuthenticated }
-        resolve: { loginRequired: loginRequired }
+        resolve: { loginRequired: loginRequiredCorporate }
       })
       .when('/report', {
         templateUrl: 'partials/report.html',
         controller: 'reportCtrl',
-        //resolve: { skipIfAuthenticated: skipIfAuthenticated }
-        resolve: { loginRequired: loginRequired }
+        resolve: { loginRequired: loginRequiredCorporate }
       })
         .when('/userProfile', {
         templateUrl: 'partials/userProfile.html',
@@ -82,6 +79,18 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
 
     function loginRequired($location, $auth) {
       if (!$auth.isAuthenticated()) {
+        $location.path('/login');
+      }
+    }
+    function loginRequiredAdmin($location, $auth , $rootScope) {
+      var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
+      if (!$auth.isAuthenticated() ||  userLevel!=3 ) { // loged in as a admin
+        $location.path('/login');
+      }
+    }
+      function loginRequiredCorporate($location, $auth , $rootScope) {
+      var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
+      if (!$auth.isAuthenticated() || userLevel<2) { // loged in as a admin
         $location.path('/login');
       }
     }

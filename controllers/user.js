@@ -8,9 +8,11 @@ var qs = require('querystring');
 var User = require('../models/User');
 
 function generateToken(user) {
+
   var payload = {
-    iss: 'my.domain.com',
+    iss: 'assessBoard',
     sub: user.id,
+    level:user.attributes.UserType,
     iat: moment().unix(),
     exp: moment().add(1, 'days').unix()
   };
@@ -30,7 +32,45 @@ exports.ensureAuthenticated = function(req, res, next) {
   }
 };
 
+exports.signupAdmin=function (req,res) {
+  // body...
+  new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    UserType:"3",
+  }).save()
+    .then(function(user) {
+        console.log("send token was reached in backend")
+        res.send({ token: generateToken(user), user: user });
+    })
+    .catch(function(err) {
+      if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
+        return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
+      }
+    });
 
+}
+
+exports.signupCorporate=function (req,res) {
+  // body...
+  new User({
+    name: req.body.name,
+    email: req.body.email,
+    password: req.body.password,
+    UserType:"2",
+  }).save()
+    .then(function(user) {
+        console.log("send token was reached in backend")
+        res.send({ token: generateToken(user), user: user });
+    })
+    .catch(function(err) {
+      if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
+        return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
+      }
+    });
+
+}
 
  // added function for getting all users data NEED TO BE REMOVED later on
   exports.allUsers=function (req,res) {
@@ -80,6 +120,9 @@ exports.ensureAuthenticated = function(req, res, next) {
 /**
  * POST /signup
  */
+
+
+
 exports.signupPost = function(req, res, next) {
   req.assert('name', 'Name cannot be blank').notEmpty();
   req.assert('email', 'Email is not valid').isEmail();
@@ -96,7 +139,8 @@ exports.signupPost = function(req, res, next) {
   new User({
     name: req.body.name,
     email: req.body.email,
-    password: req.body.password
+    password: req.body.password,
+    UserType:"1",
   }).save()
     .then(function(user) {
         console.log("send token was reached in backend")

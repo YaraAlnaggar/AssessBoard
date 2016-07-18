@@ -72,12 +72,21 @@ app.post('/auth/facebook', userController.authFacebook);
 app.get('/auth/facebook/callback', userController.authFacebookCallback);
 app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
+
+
 app.get('/GetAllGrades',userController.ensureAuthenticated
 ,gradeController.allGrades); // the added route for loading all the data from the database
 app.post('/GetBytoken',userController.ensureAuthenticated  //  REMOVED FOR THE FREE HEROKU
 ,personalityPlusController.showpersonalityPlusBytoken); // get the data using the token  //  REMOVED FOR THE FREE HEROKU
 app.post('/grades/add',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
 ,gradeController.addGrade); // add grades to user
+
+app.post('/admin/addAdmin',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
+,userController.signupAdmin); // add grades to user
+
+app.post('/admin/addCorporate',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
+,userController.signupCorporate);
+
 
 app.get('*', function(req, res) {
   res.redirect('/#' + req.originalUrl);

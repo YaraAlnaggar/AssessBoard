@@ -7,7 +7,10 @@ exports.up = function(knex, Promise) {
       table.string('password');
       table.string('passwordResetToken');
       table.dateTime('passwordResetExpires');
-      table.string("UserType")
+      table.string("UserType");
+      table.string("userVerfiedByEmail");
+      table.string("userVerfiedByAdmin");
+      table.string("userVerfiicationDate");
       table.string('gender');
       table.string('location');
       table.string('website');
