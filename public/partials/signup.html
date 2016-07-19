@@ -23,6 +23,8 @@
         </div>
         <button type="submit" class="btn btn-success">Create an account</button>
       </form>
+      <p  ng-bind="EmailIsBeingSentMsg"></p>
+      <p  ng-bind="EmailIsSend"></p>
       <div class="hr-title"><span>or</span></div>
       <div class="btn-toolbar text-center">
         <button class="btn btn-facebook" ng-click="authenticate('facebook')">Sign in with Facebook</button>

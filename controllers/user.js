@@ -6,6 +6,13 @@ var moment = require('moment');
 var request = require('request');
 var qs = require('querystring');
 var User = require('../models/User');
+var nodemailer = require("nodemailer");
+
+var dotenv = require('dotenv');
+dotenv.load();
+
+
+var userTempEmailId,mailOptions,host,link,userEmailSignup; // related to email varify function
 
 function generateToken(user) {
 
@@ -19,11 +26,98 @@ function generateToken(user) {
   return jwt.sign(payload, process.env.TOKEN_SECRET);
 }
 
+exports.SendEmail=function(req,res) {
+  // body...
+
+  console.log(req.body.email+" req.body.email val in sendEmail ")
+
+  var smtpTransport  = nodemailer.createTransport(process.env.SIGNUPMAILSERVER_URL);
+
+  // rand=Math.floor((Math.random() * 100) + 54);
+  host=req.get('host');
+  link="http://"+req.get('host')+"/verify?id="+userTempEmailId+"&email="+userEmailSignup;
+  mailOptions={
+    to: userEmailSignup,
+    from: process.env.SIGNUPMAILSERVER_EMAIL,
+    subject : "Please confirm your Email account",
+    html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>" 
+  }
+  smtpTransport.sendMail(mailOptions, function(error, response){
+     if(error){
+          console.log(error);
+   res.end("error");
+  
+  smtpTransport.sendMail(mailOptions, function(error, response){
+    if(!error){console.log("the msg was sent on the second try ")
+  }
+    else{
+      console.log("number of the failed tries : "+numberOfRequests);
+    }
+    })
+
+
+//   var msgNotSent=true;
+//   var numberOfRequests=0;
+//   while(msgNotSent && numberOfRequests<5 ){
+//   setTimeout(function () { // for the conncetion problem give it another try if it fail
+//   console.log('try sending msg again')
+//   smtpTransport.sendMail(mailOptions, function(error, response){
+//     if(!error){console.log("the msg was sent on the second try ")
+//       msgNotSent=false;
+//   }
+//     else{
+//        numberOfRequests=numberOfRequests+1;
+//       console.log("number of the failed tries : "+numberOfRequests);
+//     }
+//     })
+//   }, 2000)
+// }
+
+   }else{
+          console.log("Message sent: " + response.message);
+   res.end("sent");
+       }
+});
+}
 
 
 /**
  * Login required middleware
  */
+
+exports.emailVerify=function (req,res) {
+  // body...
+
+//if((req.protocol+"://"+req.get('host'))==("http://"+host))
+  console.log("Domain is matched. Information is from Authentic email");
+  return varifedEmailUser = new User({ id: req.query.id ,email:req.query.email  }).fetch().then(function(user) {
+    console.log(user)
+    console.log(user.attributes)
+    console.log(user.attributes.userVerfiedByEmail)
+    if(user.attributes.userVerfiedByEmail=="True"){
+      return  res.status(400)
+    }
+    else{
+      console.log("email is verified : "+req.query.email);
+      user.save({userVerfiedByEmail: 'True'}).then(function (verifedUser) {
+        // body...
+        return res.end("<h1>Email "+ verifedUser.attributes.email + " has been Successfully verified</h1>");
+
+      }).catch(function (err) {
+        // body...
+        console.log("user is not set to True in email verifed feild")
+         console.log(err)
+      })
+    }
+  }).catch(function(err) {
+
+    console.log("email is not verified");
+    console.log(err)
+   return res.end("<h1>Bad Request</h1>");
+  })
+
+}
+
 exports.ensureAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) {
     next()
@@ -39,8 +133,7 @@ exports.signupAdmin=function (req,res) {
     email: req.body.email,
     password: req.body.password,
     UserType:"3",
-  }).save()
-    .then(function(user) {
+  }).save().then(function(user) {
         console.log("send token was reached in backend")
         res.send({ token: generateToken(user), user: user });
     })
@@ -51,7 +144,6 @@ exports.signupAdmin=function (req,res) {
     });
 
 }
-
 exports.signupCorporate=function (req,res) {
   // body...
   new User({
@@ -144,7 +236,11 @@ exports.signupPost = function(req, res, next) {
   }).save()
     .then(function(user) {
         console.log("send token was reached in backend")
+        userEmailSignup=req.body.email;
+        userTempEmailId=user.id;
         res.send({ token: generateToken(user), user: user });
+        console.log("token sent started creating the mail")
+        next();
     })
     .catch(function(err) {
       if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
@@ -189,6 +285,7 @@ exports.accountPut = function(req, res, next) {
   user.fetch().then(function(user) {
     if ('password' in req.body) {
       res.send({ msg: 'Your password has been changed.' });
+      next();
     } else {
       res.send({ user: user, msg: 'Your profile information has been updated.' });
     }
