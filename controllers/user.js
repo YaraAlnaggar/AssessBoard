@@ -51,7 +51,7 @@ exports.SendEmail=function(req,res) {
     if(!error){console.log("the msg was sent on the second try ")
   }
     else{
-      console.log("number of the failed tries : "+numberOfRequests);
+      console.log("failed again ");
     }
     })
 
@@ -90,16 +90,14 @@ exports.emailVerify=function (req,res) {
 
 //if((req.protocol+"://"+req.get('host'))==("http://"+host))
   console.log("Domain is matched. Information is from Authentic email");
-  return varifedEmailUser = new User({ id: req.query.id ,email:req.query.email  }).fetch().then(function(user) {
-    console.log(user)
-    console.log(user.attributes)
-    console.log(user.attributes.userVerfiedByEmail)
+   varifedEmailUser = new User({ id: req.query.id ,email:req.query.email  }).fetch().then(function(user) {
+
     if(user.attributes.userVerfiedByEmail=="True"){
       return  res.status(400)
     }
     else{
       console.log("email is verified : "+req.query.email);
-      user.save({userVerfiedByEmail: 'True'}).then(function (verifedUser) {
+      user.save({userVerfiedByEmail: 'True'}, { patch: true }).then(function (verifedUser) {
         // body...
         return res.end("<h1>Email "+ verifedUser.attributes.email + " has been Successfully verified</h1>");
 

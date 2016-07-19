@@ -5,9 +5,9 @@ angular.module('MyApp')
       $scope.EmailIsBeingSentMsg="An Email is being sent to "+$scope.user.email+" Please confirm and go to the login Page"
       $auth.signup($scope.user)
         .then(function(response) {
-          //$auth.setToken(response);
-          //$rootScope.currentUser = response.data.user;
-          //$window.localStorage.user = JSON.stringify(response.data.user);
+          $auth.setToken(response);
+          $rootScope.currentUser = response.data.user;
+          $window.localStorage.user = JSON.stringify(response.data.user);
           //$location.path('/');
           $scope.EmailIsSend="Please check your email : "+$scope.user.email
         })
@@ -21,8 +21,8 @@ angular.module('MyApp')
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
         .then(function(response) {
-          // $rootScope.currentUser = response.data.user;
-          // $window.localStorage.user = JSON.stringify(response.data.user);
+          $rootScope.currentUser = response.data.user;
+          $window.localStorage.user = JSON.stringify(response.data.user);
           // $location.path('/');
         })
         .catch(function(response) {
