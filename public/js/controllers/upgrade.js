@@ -5,9 +5,8 @@ angular.module('MyApp')
         $scope.upgradeUsers = function() {
       viewData.UpgradeUsers($scope.toUpgradeUser)
         .then(function(response) {
-          $scope.upgradeResult.msg=response.data.msg;
           $scope.messages = {
-            success: [response.data]
+            success: Array.isArray(response.data) ? response.data : [response.data]
           };
         })
         .catch(function(response) {
