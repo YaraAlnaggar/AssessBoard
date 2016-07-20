@@ -1,10 +1,15 @@
+//the defined users are 3 now users corp admin
+// user:1000 corp:2000  admin:3000  so u can other type of users in the middle 
+// this is a easy way to deal with aith as all u gonna do to add another permissio
+// is to make another loginRequired function with the number u want as the threshold
 angular.module('MyApp', ['ngRoute', 'satellizer'])
   .config(function($routeProvider, $locationProvider, $authProvider) {
     $locationProvider.html5Mode(true);
-
     $routeProvider
       .when('/', {
-        templateUrl: 'partials/home.html'
+        templateUrl: 'partials/home.html',
+        resolve: { loginRequired: loginRequired }
+
       })
       .when('/contact', {
         templateUrl: 'partials/contact.html',
@@ -13,7 +18,12 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       .when('/orderHistory', {
         templateUrl: 'partials/orderHistory.html',
         controller: 'orderHistoryCtrl',  
-         resolve: { loginRequired: loginRequiredAdmin }
+        resolve: { loginRequired: loginRequiredAdmin }
+      })
+      .when('/upgrade', {
+        templateUrl: 'partials/upgrade.html',
+        controller: 'upgradeCtrl',  
+        resolve: { loginRequired: loginRequiredAdmin }
       })
       .when('/launcher', {
         templateUrl: 'partials/launcher.html',
@@ -77,20 +87,21 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       }
     }
 
-    function loginRequired($location, $auth) {
-      if (!$auth.isAuthenticated()) {
+    function loginRequired($location, $auth, $rootScope) {
+      var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
+      if (!$auth.isAuthenticated() || userLevel<500 ) {
         $location.path('/login');
       }
     }
     function loginRequiredAdmin($location, $auth , $rootScope) {
       var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
-      if (!$auth.isAuthenticated() ||  userLevel!=3 ) { // loged in as a admin
+      if (!$auth.isAuthenticated() ||  userLevel<2500 ) { // loged in as a admin
         $location.path('/login');
       }
     }
       function loginRequiredCorporate($location, $auth , $rootScope) {
       var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
-      if (!$auth.isAuthenticated() || userLevel<2) { // loged in as a admin
+      if (!$auth.isAuthenticated() || userLevel<1500) { // loged in as a admin
         $location.path('/login');
       }
     }

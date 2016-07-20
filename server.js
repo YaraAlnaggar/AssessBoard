@@ -81,14 +81,13 @@ app.post('/GetBytoken',userController.ensureAuthenticated  //  REMOVED FOR THE F
 app.post('/grades/add',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
 ,gradeController.addGrade); // add grades to user
 
-app.post('/admin/addAdmin',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
-,userController.signupAdmin); // add grades to user
+app.post('/admin/addAdmin',userController.ensureAuthenticated  ,userController.signupAdmin); // add grades to user
 
-app.post('/admin/addCorporate',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
-,userController.signupCorporate);
+app.post('/admin/addCorporate',userController.ensureAuthenticated  ,userController.signupCorporate);
 
+app.post('/admin/upgradeUser',userController.ensureAuthenticated,userController.upgradeUser)
 
-app.get("/verify",userController.emailVerify);
+app.get("/verify",userController.emailVerify); // verify by email
 
 
 app.get('*', function(req, res) {

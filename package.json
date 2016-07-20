@@ -10,6 +10,7 @@
     "test:server": "mocha --recursive"
   },
   "dependencies": {
+    "angular-jwt": "0.0.9",
     "async": "^1.5.2",
     "bcrypt-nodejs": "^0.0.3",
     "body-parser": "^1.15.1",

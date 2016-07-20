@@ -6,7 +6,7 @@ angular.module('MyApp')
       $auth.signup($scope.user)
         .then(function(response) {
           //$auth.setToken(response);
-          //$rootScope.currentUser = response.data.user;
+          $rootScope.currentUser = response.data.user;
           //$window.localStorage.user = JSON.stringify(response.data.user);
           //$location.path('/');
           $scope.EmailIsSend="Please check your email : "+$scope.user.email
@@ -21,7 +21,7 @@ angular.module('MyApp')
     $scope.authenticate = function(provider) {
       $auth.authenticate(provider)
         .then(function(response) {
-          //$rootScope.currentUser = response.data.user;
+          $rootScope.currentUser = response.data.user;
           //$window.localStorage.user = JSON.stringify(response.data.user);
           // $location.path('/');
         })

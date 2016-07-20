@@ -19,6 +19,8 @@ function generateToken(user) {
   var payload = {
     iss: 'assessBoard',
     sub: user.id,
+    name:user.attributes.name,
+    email:user.attributes.email,
     level:user.attributes.UserType,
     iat: moment().unix(),
     exp: moment().add(1, 'days').unix()
@@ -123,14 +125,35 @@ exports.ensureAuthenticated = function(req, res, next) {
     res.status(401).send({ msg: 'Unauthorized' });
   }
 };
+exports.upgradeUser= function (req,res) {
+  // body...
+  new User({ email:req.body.email }).fetch().then(function(user) {
+      user.save({UserType: req.body.level}, { patch: true }).then(function (upgradedUser) {
+        // body...
+        return res.json({msg: "User permissions changed"});
 
+      }).catch(function (err) {
+        // body...
+         console.log(err)
+         return res.status(500).json({msg:"cant upgrade the user check with the IT "})
+      })
+  }).catch(function(err) {
+
+    console.log(err)
+   return res.status(404).json({msg:" email not matched with the user name check the input"});
+  })
+
+
+
+}
 exports.signupAdmin=function (req,res) {
   // body...
   new User({
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    UserType:"3",
+    UserType:"3000",
+    userVerfiedByEmail:"True"
   }).save().then(function(user) {
         console.log("send token was reached in backend")
         res.send({ token: generateToken(user), user: user });
@@ -148,7 +171,7 @@ exports.signupCorporate=function (req,res) {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    UserType:"2",
+    UserType:"2000",
   }).save()
     .then(function(user) {
         console.log("send token was reached in backend")
@@ -231,7 +254,7 @@ exports.signupPost = function(req, res, next) {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    UserType:"1",
+    UserType:"1000",
   }).save()
     .then(function(user) {
         console.log("send token was reached in backend")

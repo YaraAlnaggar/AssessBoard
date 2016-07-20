@@ -10,8 +10,8 @@ angular.module('MyApp')
       deleteAccount: function() {
         return $http.delete('/account');
       },
-      getDataByToken: function(data) {
-        return $http.post('/GetBytoken',data);
-      },
+      UpgradeUsers: function(data) {
+        return $http.post('/admin/upgradeUser',data);
+      }
     };
   });

@@ -13,5 +13,8 @@ angular.module('MyApp')
       getReportByToken: function(data) {
         return $http.post('/reports',data);
       },
+      UpgradeUsers: function(data) {
+        return $http.post('/admin/upgradeUser',data);
+      }
     };
   });
