@@ -3,7 +3,7 @@ angular.module('MyApp')
     $scope.profile = $rootScope.currentUser;
 
     $scope.FetchData = function() {
-      viewData.getDataByToken($scope.user)
+      viewData.getReportByToken($scope.user)
         .then(function(response) {
           $scope.returnedDataString=JSON.stringify(response.data);
           $scope.returnedData=response.data;

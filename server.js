@@ -74,7 +74,7 @@ app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
 
 
-app.get('/GetAllGrades',userController.ensureAuthenticated
+app.get('/reports',userController.ensureAuthenticated
 ,gradeController.allGrades); // the added route for loading all the data from the database
 app.post('/GetBytoken',userController.ensureAuthenticated  //  REMOVED FOR THE FREE HEROKU
 ,personalityPlusController.showpersonalityPlusBytoken); // get the data using the token  //  REMOVED FOR THE FREE HEROKU

@@ -185,7 +185,7 @@ exports.signupCorporate=function (req,res) {
     req.sanitize('email').normalizeEmail({ remove_dots: false });
 
     var errors = req.validationErrors();
-
+    var userIsVerfiedByEmail=false;
     if (errors) {
       return res.status(400).send(errors);
     }
@@ -198,8 +198,9 @@ exports.signupCorporate=function (req,res) {
           'Double-check your email address and try again.'
           });
         }
+        if(user.attributes.userVerfiedByEmail=="True") userIsVerfiedByEmail=true
         user.comparePassword(req.body.password, function(err, isMatch) {
-          if (!isMatch) {
+          if (!isMatch || !userIsVerfiedByEmail) {
             return res.status(401).send({ msg: 'Invalid email or password' });
           }
           res.send({ token: generateToken(user), user: user.toJSON() });
