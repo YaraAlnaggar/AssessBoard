@@ -1,16 +1,15 @@
 angular.module('MyApp')
   .controller('orderHistoryCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
     $scope.profile = $rootScope.currentUser;
-    console.log($scope.profile)
     $scope.FetchData = function() {
       viewData.getDataByToken($scope.user)
         .then(function(response) {
           $scope.returnedDataString=JSON.stringify(response.data);
           $scope.returnedData=response.data;
           if($scope.returnedDataString !="null")
-          $scope.showDataTokenBy=true
+          $scope.showDataTokenBy=true;
           else
-          $scope.showDataTokenBy=false
+          $scope.showDataTokenBy=false;
           console.log(JSON.stringify(response.data));
           $scope.messages = {
             success: [response.data]

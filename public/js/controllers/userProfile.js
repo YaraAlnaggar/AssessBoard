@@ -7,9 +7,9 @@ angular.module('MyApp')
         .then(function(response) {
           $scope.userData=JSON.stringify(response.data);
           if( $scope.userData !="null")
-          $scope.showDataTokenBy=true
+          $scope.showDataTokenBy=true ;
           else
-          $scope.showDataTokenBy=false
+          $scope.showDataTokenBy=false ;
          // console.log(JSON.stringify(response.data));
           $scope.messages = {
             success: [response.data]

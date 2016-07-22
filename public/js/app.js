@@ -1,5 +1,5 @@
 //the defined users are 3 now users corp admin
-// user:1000 corp:2000  admin:3000  so u can other type of users in the middle 
+// user:1000 corp:2000  admin:3000  so u can other type of users in the middle
 // this is a easy way to deal with aith as all u gonna do to add another permissio
 // is to make another loginRequired function with the number u want as the threshold
 angular.module('MyApp', ['ngRoute', 'satellizer'])
@@ -17,12 +17,12 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       })
       .when('/orderHistory', {
         templateUrl: 'partials/orderHistory.html',
-        controller: 'orderHistoryCtrl',  
+        controller: 'orderHistoryCtrl',
         resolve: { loginRequired: loginRequiredAdmin }
       })
       .when('/upgrade', {
         templateUrl: 'partials/upgrade.html',
-        controller: 'upgradeCtrl',  
+        controller: 'upgradeCtrl',
         resolve: { loginRequired: loginRequiredAdmin }
       })
       .when('/launcher', {
@@ -88,20 +88,19 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
     }
 
     function loginRequired($location, $auth, $rootScope) {
-      var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
-      if (!$auth.isAuthenticated() || userLevel<500 ) {
+      if (!$auth.isAuthenticated()  ) {
         $location.path('/login');
       }
     }
     function loginRequiredAdmin($location, $auth , $rootScope) {
-      var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
+      var userLevel=parseInt( $rootScope.currentUser.UserType, 10);
       if (!$auth.isAuthenticated() ||  userLevel<2500 ) { // loged in as a admin
         $location.path('/login');
       }
     }
       function loginRequiredCorporate($location, $auth , $rootScope) {
-      var userLevel=parseInt( $rootScope.currentUser.UserType, 10)
-      if (!$auth.isAuthenticated() || userLevel<1500) { // loged in as a admin
+        var userLevel=parseInt( $rootScope.currentUser.UserType, 10);
+        if (!$auth.isAuthenticated() || userLevel<1500) { // loged in as a admin
         $location.path('/login');
       }
     }

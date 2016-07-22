@@ -8,9 +8,9 @@ angular.module('MyApp')
           $scope.returnedDataString=JSON.stringify(response.data);
           $scope.returnedData=response.data;
           if($scope.returnedDataString !="null")
-          $scope.showDataTokenBy=true
+          $scope.showDataTokenBy=true;
           else
-          $scope.showDataTokenBy=false
+          $scope.showDataTokenBy=false;
           console.log(JSON.stringify(response.data));
           $scope.messages = {
             success: [response.data]
@@ -29,9 +29,9 @@ angular.module('MyApp')
           $scope.returnedDataString=JSON.stringify(response.data);
           $scope.returnedData=response.data;
           if($scope.returnedDataString !="null")
-          $scope.showDataTokenBy=true
+          $scope.showDataTokenBy=true;
           else
-          $scope.showDataTokenBy=false
+          $scope.showDataTokenBy=false;
           console.log(JSON.stringify(response.data));
           $scope.messages = {
             success: [response.data]
