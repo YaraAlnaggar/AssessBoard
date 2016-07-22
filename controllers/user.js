@@ -31,7 +31,7 @@ function generateToken(user) {
 exports.SendEmail=function(req,res) {
   // body...
 
-  console.log(req.body.email+" req.body.email val in sendEmail ")
+  console.log(req.body.email+" req.body.email val in sendEmail ");
 
   var smtpTransport  = nodemailer.createTransport(process.env.SIGNUPMAILSERVER_URL);
 
@@ -42,20 +42,20 @@ exports.SendEmail=function(req,res) {
     to: userEmailSignup,
     from: process.env.SIGNUPMAILSERVER_EMAIL,
     subject : "Please confirm your Email account",
-    html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>" 
-  }
+    html : "Hello,<br> Please Click on the link to verify your email.<br><a href="+link+">Click here to verify</a>"
+  };
   smtpTransport.sendMail(mailOptions, function(error, response){
      if(error){
           console.log(error);
    res.end("error");
-  
+
   smtpTransport.sendMail(mailOptions, function(error, response){
-    if(!error){console.log("the msg was sent on the second try ")
+    if(!error){console.log("the msg was sent on the second try ");
   }
     else{
       console.log("failed again ");
     }
-    })
+  });
 
 
 //   var msgNotSent=true;
@@ -80,7 +80,7 @@ exports.SendEmail=function(req,res) {
    res.end("sent");
        }
 });
-}
+};
 
 
 /**
@@ -95,7 +95,7 @@ exports.emailVerify=function (req,res) {
    varifedEmailUser = new User({ id: req.query.id ,email:req.query.email  }).fetch().then(function(user) {
 
     if(user.attributes.userVerfiedByEmail=="True"){
-      return  res.status(400)
+      return  res.status(400);
     }
     else{
       console.log("email is verified : "+req.query.email);
@@ -105,22 +105,22 @@ exports.emailVerify=function (req,res) {
 
       }).catch(function (err) {
         // body...
-        console.log("user is not set to True in email verifed feild")
-         console.log(err)
-      })
+        console.log("user is not set to True in email verifed feild");
+         console.log(err);
+      });
     }
   }).catch(function(err) {
 
     console.log("email is not verified");
-    console.log(err)
+    console.log(err);
    return res.end("<h1>Bad Request</h1>");
-  })
+ });
 
-}
+};
 
 exports.ensureAuthenticated = function(req, res, next) {
   if (req.isAuthenticated()) {
-    next()
+    next();
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
@@ -134,18 +134,18 @@ exports.upgradeUser= function (req,res) {
 
       }).catch(function (err) {
         // body...
-         console.log(err)
-         return res.status(500).json({msg:"cant upgrade the user check with the IT "})
-      })
+         console.log(err);
+         return res.status(500).json({msg:"cant upgrade the user check with the IT "});
+      });
   }).catch(function(err) {
 
-    console.log(err)
+    console.log(err);
    return res.status(404).json({msg:" email not matched with the user name check the input"});
-  })
+ });
 
 
 
-}
+};
 exports.signupAdmin=function (req,res) {
   // body...
   new User({
@@ -155,7 +155,7 @@ exports.signupAdmin=function (req,res) {
     UserType:"3000",
     userVerfiedByEmail:"True"
   }).save().then(function(user) {
-        console.log("send token was reached in backend")
+        console.log("send token was reached in backend");
         res.send({ token: generateToken(user), user: user });
     })
     .catch(function(err) {
@@ -164,7 +164,7 @@ exports.signupAdmin=function (req,res) {
       }
     });
 
-}
+};
 exports.signupCorporate=function (req,res) {
   // body...
   new User({
@@ -174,7 +174,7 @@ exports.signupCorporate=function (req,res) {
     UserType:"2000",
   }).save()
     .then(function(user) {
-        console.log("send token was reached in backend")
+        console.log("send token was reached in backend");
         res.send({ token: generateToken(user), user: user });
     })
     .catch(function(err) {
@@ -183,20 +183,20 @@ exports.signupCorporate=function (req,res) {
       }
     });
 
-}
+};
 
  // added function for getting all users data NEED TO BE REMOVED later on
   exports.allUsers=function (req,res) {
   // body...
    var queryPram = req.query; // the queryPram now has all the vars that u enteried in your url
-       new User({ // email:queryPram.email  ## as a example so only the user with this email will be returned 
+       new User({ // email:queryPram.email  ## as a example so only the user with this email will be returned
        }).fetchAll().then(function (allUsersData) {
          // body...
-         res.json(allUsersData)
-       })
+         res.json(allUsersData);
+       });
 
-}
-/// 
+};
+///
   /**
    * POST /login
    * Sign in with email and password
@@ -221,7 +221,7 @@ exports.signupCorporate=function (req,res) {
           'Double-check your email address and try again.'
           });
         }
-        if(user.attributes.userVerfiedByEmail=="True") userIsVerfiedByEmail=true
+        if(user.attributes.userVerfiedByEmail=="True") userIsVerfiedByEmail=true;
         user.comparePassword(req.body.password, function(err, isMatch) {
           if (!isMatch || !userIsVerfiedByEmail) {
             return res.status(401).send({ msg: 'Invalid email or password' });
@@ -257,11 +257,11 @@ exports.signupPost = function(req, res, next) {
     UserType:"1000",
   }).save()
     .then(function(user) {
-        console.log("send token was reached in backend")
+        console.log("send token was reached in backend");
         userEmailSignup=req.body.email;
         userTempEmailId=user.id;
         res.send({ token: generateToken(user), user: user });
-        console.log("token sent started creating the mail")
+        console.log("token sent started creating the mail");
         next();
     })
     .catch(function(err) {
@@ -526,7 +526,7 @@ exports.authFacebook = function(req, res) {
               .fetch()
               .then(function(user) {
                 if (user) {
-                  return res.status(400).send({ msg: user.get('email') + ' is already associated with another account.' })
+                  return res.status(400).send({ msg: user.get('email') + ' is already associated with another account.' });
                 }
                 user = new User();
                 user.set('name', profile.name);
@@ -604,7 +604,7 @@ exports.authGoogle = function(req, res) {
               .fetch()
               .then(function(user) {
                 if (user) {
-                  return res.status(400).send({ msg: user.get('email') + ' is already associated with another account.' })
+                  return res.status(400).send({ msg: user.get('email') + ' is already associated with another account.' });
                 }
                 user = new User();
                 user.set('name', profile.name);

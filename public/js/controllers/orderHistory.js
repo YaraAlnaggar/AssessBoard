@@ -1,6 +1,7 @@
 angular.module('MyApp')
   .controller('orderHistoryCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
     $scope.profile = $rootScope.currentUser;
+    
     $scope.FetchData = function() {
       viewData.getDataByToken($scope.user)
         .then(function(response) {

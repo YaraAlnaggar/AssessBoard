@@ -1,7 +1,6 @@
 angular.module('MyApp')
   .controller('userProfileCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
     $scope.profile = $rootScope.currentUser;
-
     $scope.fetchUserData = function() {
       viewData.getDataByToken($scope.user)
         .then(function(response) {

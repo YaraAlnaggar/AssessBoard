@@ -91,16 +91,16 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       if (!$auth.isAuthenticated()  ) {
         $location.path('/login');
       }
+      $rootScope.userTokenObject=$auth.getPayload();
+      $rootScope.userTokenLevel=parseInt($rootScope.userTokenObject.level, 10);
     }
     function loginRequiredAdmin($location, $auth , $rootScope) {
-      var userLevel=parseInt( $rootScope.currentUser.UserType, 10);
-      if (!$auth.isAuthenticated() ||  userLevel<2500 ) { // loged in as a admin
+      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<2500 ) { // loged in as a admin
         $location.path('/login');
       }
     }
       function loginRequiredCorporate($location, $auth , $rootScope) {
-        var userLevel=parseInt( $rootScope.currentUser.UserType, 10);
-        if (!$auth.isAuthenticated() || userLevel<1500) { // loged in as a admin
+        if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<1500) { // loged in as a admin
         $location.path('/login');
       }
     }
