@@ -1,5 +1,5 @@
 //the defined users are 3 now users corp admin
-// user:1000 corp:2000  admin:3000  so u can other type of users in the middle
+// user:1000  corpUser:2000 Corporate:3000  employee:4000 SuperUser:5000  so u can other type of users in the middle
 // this is a easy way to deal with aith as all u gonna do to add another permissio
 // is to make another loginRequired function with the number u want as the threshold
 angular.module('MyApp', ['ngRoute', 'satellizer'])
@@ -95,16 +95,22 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       $rootScope.userTokenLevel=parseInt($rootScope.userTokenObject.level, 10);
     }
     function loginRequiredAdmin($location, $auth , $rootScope) {
-      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<2500 ) { // loged in as a admin
+      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<4500 ) { // loged in as a admin
         $location.path('/login');
       }
     }
+    function loginRequiredEmployee($location, $auth , $rootScope) {
+      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<3500) { // loged in as a admin
+      $location.path('/login');
+    }
+  }
       function loginRequiredCorporate($location, $auth , $rootScope) {
-        if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<1500) { // loged in as a admin
+        if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<2500) { // loged in as a admin
         $location.path('/login');
       }
     }
-  })
+  }
+)
   .run(function($rootScope, $window) {
     if ($window.localStorage.user) {
       $rootScope.currentUser = JSON.parse($window.localStorage.user);

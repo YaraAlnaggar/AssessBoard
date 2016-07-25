@@ -12,5 +12,6 @@ angular.module('MyApp')
       $auth.logout();
       delete $window.localStorage.user;
       $location.path('/');
+      location.reload();
     };
   });

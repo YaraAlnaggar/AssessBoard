@@ -15,7 +15,7 @@ dotenv.load();
 
 // Models
 var User = require('./models/User');
-var Grade =require('./models/grade')
+var Grade =require('./models/grade');
 
 // Controllers
 var userController = require('./controllers/user');
@@ -42,7 +42,7 @@ app.use(function(req, res, next) {
     try {
       return jwt.verify(token, process.env.TOKEN_SECRET);
     } catch (err) {
-      console.log(err)
+      console.log(err);
       return false;
     }
   };
@@ -74,18 +74,12 @@ app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
 
 
-app.get('/reports',userController.ensureAuthenticated
-,gradeController.allGrades); // the added route for loading all the data from the database
-app.post('/GetBytoken',userController.ensureAuthenticated  //  REMOVED FOR THE FREE HEROKU
-,personalityPlusController.showpersonalityPlusBytoken); // get the data using the token  //  REMOVED FOR THE FREE HEROKU
-app.post('/grades/add',userController.ensureAuthenticated  // REMOVED FOR THE FREE HEROKU
-,gradeController.addGrade); // add grades to user
+app.get('/reports',userController.ensureAuthenticated,gradeController.allGrades); // the added route for loading all the data from the database
+app.post('/GetBytoken',userController.ensureAuthenticated ,personalityPlusController.showpersonalityPlusBytoken); // get the data using the token  //  REMOVED FOR THE FREE HEROKU
+app.post('/grades/add',userController.ensureAuthenticated ,gradeController.addGrade); // add grades to user
 
 app.post('/admin/addAdmin',userController.ensureAuthenticated  ,userController.signupAdmin); // add grades to user
-
-app.post('/admin/addCorporate',userController.ensureAuthenticated  ,userController.signupCorporate);
-
-app.post('/admin/upgradeUser',userController.ensureAuthenticated,userController.upgradeUser)
+app.post('/admin/upgradeUser',userController.ensureAuthenticated,userController.upgradeUser);
 
 app.get("/verify",userController.emailVerify); // verify by email
 

@@ -11,7 +11,7 @@ exports.up = function(knex, Promise) {
       table.string("userVerfiedByEmail");
       table.string("userVerfiedByAdmin");
       table.string("userVerfiicationDate");
-       table.string('gender');
+      table.string('gender');
       table.string('location');
       table.string('website');
       table.string('picture');
@@ -27,5 +27,5 @@ exports.up = function(knex, Promise) {
 exports.down = function(knex, Promise) {
   return Promise.all([
     knex.schema.dropTable('users')
-  ])
+  ]);
 };

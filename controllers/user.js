@@ -152,28 +152,9 @@ exports.signupAdmin=function (req,res) {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    UserType:"3000",
+    UserType:"5000",
     userVerfiedByEmail:"True"
   }).save().then(function(user) {
-        console.log("send token was reached in backend");
-        res.send({ token: generateToken(user), user: user });
-    })
-    .catch(function(err) {
-      if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
-        return res.status(400).send({ msg: 'The email address you have entered is already associated with another account.' });
-      }
-    });
-
-};
-exports.signupCorporate=function (req,res) {
-  // body...
-  new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    UserType:"2000",
-  }).save()
-    .then(function(user) {
         console.log("send token was reached in backend");
         res.send({ token: generateToken(user), user: user });
     })
@@ -535,6 +516,9 @@ exports.authFacebook = function(req, res) {
                 user.set('location', profile.location && profile.location.name);
                 user.set('picture', 'https://graph.facebook.com/' + profile.id + '/picture?type=large');
                 user.set('facebook', profile.id);
+                user.set('UserType', "1000");
+                user.set('userVerfiedByEmail',"True");
+
                 user.save().then(function(user) {
                   return res.send({ token: generateToken(user), user: user });
                 });
@@ -613,6 +597,8 @@ exports.authGoogle = function(req, res) {
                 user.set('location', profile.location);
                 user.set('picture', profile.picture.replace('sz=50', 'sz=200'));
                 user.set('google', profile.sub);
+                user.set('UserType', "1000");
+                user.set('userVerfiedByEmail',"True");
                 user.save().then(function(user) {
                   res.send({ token: generateToken(user), user: user });
                 });
