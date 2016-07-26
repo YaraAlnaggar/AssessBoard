@@ -14,6 +14,7 @@ exports.up = function(knex, Promise) {
       table.boolean("userVerfiedByEmail");
       table.boolean("userVerfiedByCorp");
       table.boolean("userVerfiedByAdmin");
+      table.boolean("userVerfiedBySms");
       table.timestamp("userVerfiicationDate");
       table.string('gender');
       table.string('location');
