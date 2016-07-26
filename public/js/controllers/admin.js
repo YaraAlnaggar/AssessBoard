@@ -1,5 +1,5 @@
 angular.module('MyApp')
-  .controller('upgradeCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
+  .controller('adminCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
     $scope.profile = $rootScope.currentUser;
 
         $scope.upgradeUsers = function() {

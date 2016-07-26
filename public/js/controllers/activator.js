@@ -1,5 +1,5 @@
 angular.module('MyApp')
-  .controller('launcherCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
+  .controller('activatorCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
     $scope.profile = $rootScope.currentUser;
 
     $scope.FetchData = function() {

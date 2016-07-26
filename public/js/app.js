@@ -15,25 +15,38 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
         templateUrl: 'partials/contact.html',
         controller: 'ContactCtrl',
       })
-      .when('/orderHistory', {
-        templateUrl: 'partials/orderHistory.html',
-        controller: 'orderHistoryCtrl',
-        resolve: { loginRequired: loginRequiredAdmin }
+      .when('/library', {
+        templateUrl: 'partials/library.html',
+        controller: 'libraryCtrl',
       })
-      .when('/upgrade', {
-        templateUrl: 'partials/upgrade.html',
-        controller: 'upgradeCtrl',
-        resolve: { loginRequired: loginRequiredAdmin }
+      .when('/about', {
+        templateUrl: 'partials/about.html',
+        controller: 'aboutCtrl',
       })
-      .when('/launcher', {
-        templateUrl: 'partials/launcher.html',
-        controller: 'launcherCtrl',
+      .when('/billingHistory', {
+        templateUrl: 'partials/billingHistory.html',
+        controller: 'billingHistoryCtrl',
         resolve: { loginRequired: loginRequiredCorporate }
       })
-      .when('/report', {
-        templateUrl: 'partials/report.html',
-        controller: 'reportCtrl',
+      .when('/purchaseRequest', {
+        templateUrl: 'partials/purchaseRequest.html',
+        controller: 'purchaseRequestCtrl',
         resolve: { loginRequired: loginRequiredCorporate }
+      })
+      .when('/admin', {
+        templateUrl: 'partials/admin.html',
+        controller: 'adminCtrl',
+        resolve: { loginRequired: loginRequiredAdmin }
+      })
+      .when('/activator', {
+        templateUrl: 'partials/activator.html',
+        controller: 'activatorCtrl',
+        resolve: { loginRequired: loginRequiredCorporate }
+      })
+      .when('/results', {
+        templateUrl: 'partials/results.html',
+        controller: 'resultsCtrl',
+        resolve: { loginRequired: loginRequired }
       })
         .when('/userProfile', {
         templateUrl: 'partials/userProfile.html',

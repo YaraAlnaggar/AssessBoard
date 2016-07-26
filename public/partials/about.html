@@ -1,0 +1,25 @@
+<div class="container login-container">
+  <div class="panel">
+    <div class="panel-body">
+          <div ng-if="messages.success" role="alert" class="alert alert-success">
+        <div ng-repeat="success in messages.success">{{success.msg}}</div>
+      </div>
+      <div ng-if="messages.error" role="alert" class="alert alert-danger">
+        <div ng-repeat="error in messages.error">{{error.msg}}</div>
+      </div>
+      <form ng-submit="upgradeUsers()">
+        <legend>Update Panel </legend>
+        <div class="form-group">
+          <label for="name">User </label>
+          </br>
+          <input type="email" name="email" id="email" placeholder="email" class="form-control" ng-model="toUpgradeUser.email" autofocus>
+          </br>
+            <input type="txt" name="level" id="level" placeholder="level" class="form-control" ng-model="toUpgradeUser.level" autofocus>
+
+        <button type="submit" class="btn btn-success">Upgrade</button>
+              <p ng-bind="upgradeResult"></p>
+      </form>
+      <div class="hr-title"><span>By the Hodz</span></div>
+    </div>
+  </div>
+</div>
