@@ -5,7 +5,7 @@ angular.module('MyApp')
         .then(function(response) {
           $rootScope.currentUser = response.data.user;
           $window.localStorage.user = JSON.stringify(response.data.user);
-          $location.path('/');
+          $location.path('/results');
         })
         .catch(function(response) {
           $scope.messages = {
@@ -20,7 +20,7 @@ angular.module('MyApp')
 
           $rootScope.currentUser = response.data.user;
           $window.localStorage.user = JSON.stringify(response.data.user);
-          $location.path('/');
+          $location.path('/results');
         })
         .catch(function(response) {
           if (response.error) {

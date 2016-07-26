@@ -65,7 +65,7 @@ angular.module('MyApp')
         .then(function() {
           $auth.logout();
           delete $window.localStorage.user;
-          $location.path('/');
+          $location.path('/about');
         })
         .catch(function(response) {
           $scope.messages = {

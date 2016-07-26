@@ -13,14 +13,14 @@
     </div>
     <div id="navbar" class="navbar-collapse collapse">
       <ul class="nav navbar-nav">
-        <li ng-show='userTokenLevel > 500 ' ng-class="{ active: isActive('/')}"><a href="/">Home</a></li>
+        <!-- <li ng-show='userTokenLevel > 500 ' ng-class="{ active: isActive('/')}"><a href="/">Home</a></li> -->
         <li ng-class="{ active: isActive('/contact')}"><a href="/contact">Contact</a></li>
         <li ng-class="{ active: isActive('/about')}"><a href="/about">About</a></li>
         <li ng-class="{ active: isActive('/library')}"><a href="/library">Library</a></li>
 
 
         <li ng-show='userTokenLevel > 1500 ' ng-class="{ active: isActive('/results')}"><a href="/results">Results</a></li>
-        <li ng-show='userTokenLevel > 500 ' ng-class="{ active: isActive('/userProfile')}"><a href="/userProfile">Examiner Profile</a></li>
+        <!-- <li ng-show='userTokenLevel > 500 ' ng-class="{ active: isActive('/userProfile')}"><a href="/userProfile">Examiner Profile</a></li> -->
         <li ng-show='userTokenLevel > 2500 ' ng-class="{ active: isActive('/billingHistory')}"><a href="/billingHistory">Billing History</a></li>
         <li ng-show='userTokenLevel > 2500 ' ng-class="{ active: isActive('/purchaseRequest')}"><a href="/purchaseRequest">Purchase Request</a></li>
         <li ng-show='userTokenLevel > 2500 ' ng-class="{ active: isActive('activator')}"><a href="/activator">Activator</a></li>
