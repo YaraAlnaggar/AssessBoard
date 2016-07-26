@@ -5,6 +5,19 @@ var bookshelf = require('../config/bookshelf');
 var User = bookshelf.Model.extend({
   tableName: 'users',
   hasTimestamps: true,
+  company: function() {
+   return this.belongsTo(company);
+ },
+
+  notfication: function() {
+ return this.hasMany(notfication);
+},
+
+  sessionLogs: function() {
+return this.hasMany(sessionLog);
+},
+
+
 
   initialize: function() {
     this.on('saving', this.hashPassword, this);
