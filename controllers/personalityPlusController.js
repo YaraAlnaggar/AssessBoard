@@ -10,8 +10,8 @@ var personalityPlus = require('../models/personalityPlusModel');
 
 exports.addpersonalityPlusResult=function (req,res,next) {
   // body...
-   var body = req.body
-   console.log(body)
+   var body = req.body;
+   console.log(body);
   new personalityPlus(body).save()
     .then(function(user) {
         res.send("success");
@@ -21,7 +21,7 @@ exports.addpersonalityPlusResult=function (req,res,next) {
         return res.status(400).send({ msg: 'cant create new entery' });
       }
     });
-}
+};
 
 exports.showAllpersonalityPlusResults=function (req,res,next) {
   // body...
@@ -36,7 +36,7 @@ exports.showAllpersonalityPlusResults=function (req,res,next) {
     });
 
 
-}
+};
 
 exports.showpersonalityPlusBytoken=function (req,res,next) {
   // body...
@@ -49,6 +49,4 @@ exports.showpersonalityPlusBytoken=function (req,res,next) {
         return res.status(400).send({ msg: 'cant get the data' });
       }
     });
-    }
-
-
+  };

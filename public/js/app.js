@@ -108,7 +108,7 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
       $rootScope.userTokenLevel=parseInt($rootScope.userTokenObject.level, 10);
     }
     function loginRequiredAdmin($location, $auth , $rootScope) {
-      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<4500 ) { // loged in as a admin
+      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<3500 ) { // loged in as a admin
         $location.path('/login');
       }
     }

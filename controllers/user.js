@@ -127,6 +127,9 @@ exports.ensureAuthenticated = function(req, res, next) {
 };
 exports.upgradeUser= function (req,res) {
   // body...
+  console.log(req);
+
+
   new User({ email:req.body.email }).fetch().then(function(user) {
       user.save({UserType: req.body.level}, { patch: true }).then(function (upgradedUser) {
         // body...
@@ -235,7 +238,7 @@ exports.signupPost = function(req, res, next) {
     name: req.body.name,
     email: req.body.email,
     password: req.body.password,
-    UserType:"1000",
+    UserType:"1000"
   }).save()
     .then(function(user) {
         console.log("send token was reached in backend");
