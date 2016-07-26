@@ -10,8 +10,8 @@ var grade = require('../models/grade');
 
 exports.addGrade=function (req,res,next) {
   // body...
-   var body = req.body
-   console.log(body)
+   var body = req.body;
+   console.log(body);
   new grade(body).save()
     .then(function(user) {
         res.send("success");
@@ -21,7 +21,7 @@ exports.addGrade=function (req,res,next) {
         return res.status(400).send({ msg: 'cant create new entery' });
       }
     });
-}
+};
 
 exports.allGrades=function (req,res,next) {
   // body...
@@ -36,7 +36,7 @@ exports.allGrades=function (req,res,next) {
     });
 
 
-}
+};
 
 exports.gradeByToken=function (req,res,next) {
   // body...
@@ -49,6 +49,4 @@ exports.gradeByToken=function (req,res,next) {
         return res.status(400).send({ msg: 'cant get the data' });
       }
     });
-    }
-
-
+  };

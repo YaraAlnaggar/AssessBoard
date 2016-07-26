@@ -14,7 +14,7 @@ exports.up = function(knex, Promise) {
       table.string('importance');
       table.string('recomended field ');
       table.string('company appling to');
-      table.string('token')
+      table.string('token');
       table.timestamps();
     })
   ]);
@@ -23,5 +23,5 @@ exports.up = function(knex, Promise) {
 exports.down = function(knex, Promise) {
   return Promise.all([
     knex.schema.dropTable('grades')
-  ])
+  ]);
 };

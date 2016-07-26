@@ -2,15 +2,19 @@ exports.up = function(knex, Promise) {
   return Promise.all([
     knex.schema.createTable('users', function(table) {
       table.increments();
-      table.string('name');
-      table.string('email').unique();
+      table.string('UserID');
+      table.string('FirstName');
+      table.string('FaimlyName');
+      table.string('PersonalEmail').unique();
+      table.integer('Phone').unique();
       table.string('password');
       table.string('passwordResetToken');
       table.dateTime('passwordResetExpires');
-      table.string("UserType");
-      table.string("userVerfiedByEmail");
-      table.string("userVerfiedByAdmin");
-      table.string("userVerfiicationDate");
+      table.integer("UserAccountType");
+      table.boolean("userVerfiedByEmail");
+      table.boolean("userVerfiedByCorp");
+      table.boolean("userVerfiedByAdmin");
+      table.timestamp("userVerfiicationDate");
       table.string('gender');
       table.string('location');
       table.string('website');
