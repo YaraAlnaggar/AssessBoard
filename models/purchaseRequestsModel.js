@@ -6,6 +6,12 @@ var purchaseRequest = bookshelf.Model.extend({
   qouta: function() {
    return this.belongsTo(qouta);
  },
+ sessionLog: function() {
+  return this.belongsTo(sessionLog);
+},
+bill: function() {
+ return this.hasOne(bill);
+},
 
 });
 

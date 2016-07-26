@@ -2,7 +2,10 @@ var bookshelf = require('../config/bookshelf');
 
 var examDetail = bookshelf.Model.extend({
   tableName: 'examDetails',
-  hasTimestamps: true
+  hasTimestamps: true,
+  result: function() {
+   return this.belongsTo(result);
+ },
 
 });
 
