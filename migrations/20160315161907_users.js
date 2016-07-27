@@ -184,7 +184,7 @@ exports.up = function(knex, Promise) {
       table.increments("id").primary();
       table.string('UserID');
       table.string('FirstName');
-      table.string('FaimlyName');
+      table.string('FamilyName');
       table.string('PersonalEmail').unique();
       table.integer('Phone').unique();
       table.string('password');
@@ -195,7 +195,7 @@ exports.up = function(knex, Promise) {
       table.boolean("userVerfiedByCorp");
       table.boolean("userVerfiedByAdmin");
       table.boolean("userVerfiedBySms");
-      table.timestamp("userVerfiicationDate");
+      table.dateTime("userVerfiicationDate");
       table.string('gender');
       table.string('location');
       table.string('website');

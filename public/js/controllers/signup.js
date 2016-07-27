@@ -9,7 +9,7 @@ angular.module('MyApp')
           $rootScope.currentUser = response.data.user;
           $window.localStorage.user = JSON.stringify(response.data.user);
           //$location.path('/');
-          $scope.EmailIsSend="Please check your email : "+$scope.user.email;
+          $scope.EmailIsSend="Please check your email : "+$scope.user.PersonalEmail;
         })
         .catch(function(response) {
           $scope.messages = {

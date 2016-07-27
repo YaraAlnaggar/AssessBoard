@@ -31,7 +31,7 @@ function generateToken(user) {
 exports.SendEmail=function(req,res) {
   // body...
 
-  console.log(req.body.email+" req.body.email val in sendEmail ");
+  console.log(req.body.PersonalEmail+" req.body.email val in sendEmail ");
 
   var smtpTransport  = nodemailer.createTransport(process.env.SIGNUPMAILSERVER_URL);
 
@@ -92,16 +92,16 @@ exports.emailVerify=function (req,res) {
 
 //if((req.protocol+"://"+req.get('host'))==("http://"+host))
   console.log("Domain is matched. Information is from Authentic email");
-   varifedEmailUser = new User({ id: req.query.id ,email:req.query.email  }).fetch().then(function(user) {
+   varifedEmailUser = new User({ id: req.query.id ,PersonalEmail:req.query.email  }).fetch().then(function(user) {
 
-    if(user.attributes.userVerfiedByEmail=="True"){
+    if(user.attributes.userVerfiedByEmail===true){
       return  res.status(400);
     }
     else{
       console.log("email is verified : "+req.query.email);
-      user.save({userVerfiedByEmail: 'True'}, { patch: true }).then(function (verifedUser) {
+      user.save({userVerfiedByEmail:true}, { patch: true }).then(function (verifedUser) {
         // body...
-        return res.end("<h1>Email "+ verifedUser.attributes.email + " has been Successfully verified</h1>");
+        return res.end("<h1>Email "+ verifedUser.attributes.PersonalEmail + " has been Successfully verified</h1>");
 
       }).catch(function (err) {
         // body...
@@ -130,8 +130,8 @@ exports.upgradeUser= function (req,res) {
   console.log(req);
 
 
-  new User({ email:req.body.email }).fetch().then(function(user) {
-      user.save({UserType: req.body.level}, { patch: true }).then(function (upgradedUser) {
+  new User({ PersonalEmail:req.body.PersonalEmail }).fetch().then(function(user) {
+      user.save({UserAccountType: req.body.level}, { patch: true }).then(function (upgradedUser) {
         // body...
         return res.json({msg: "User permissions changed"});
 
@@ -186,18 +186,18 @@ exports.signupAdmin=function (req,res) {
    * Sign in with email and password
    */
   exports.loginPost = function(req, res, next) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('email', 'Email cannot be blank').notEmpty();
-    req.assert('password', 'Password cannot be blank').notEmpty();
-    req.sanitize('email').normalizeEmail({ remove_dots: false });
+    // req.assert('email', 'Email is not valid').isEmail();
+    // req.assert('email', 'Email cannot be blank').notEmpty();
+    // req.assert('password', 'Password cannot be blank').notEmpty();
+    // req.sanitize('email').normalizeEmail({ remove_dots: false });
+    //
+    // var errors = req.validationErrors();
+    // var userIsVerfiedByEmail=false;
+    // if (errors) {
+    //   return res.status(400).send(errors);
+    // }
 
-    var errors = req.validationErrors();
-    var userIsVerfiedByEmail=false;
-    if (errors) {
-      return res.status(400).send(errors);
-    }
-
-    new User({ email: req.body.email })
+    new User({ PersonalEmail: req.body.PersonalEmail })
       .fetch()
       .then(function(user) {
         if (!user) {
@@ -205,9 +205,8 @@ exports.signupAdmin=function (req,res) {
           'Double-check your email address and try again.'
           });
         }
-        if(user.attributes.userVerfiedByEmail=="True") userIsVerfiedByEmail=true;
         user.comparePassword(req.body.password, function(err, isMatch) {
-          if (!isMatch || !userIsVerfiedByEmail) {
+          if (!isMatch || user.attributes.userVerfiedByEmail===false) {
             return res.status(401).send({ msg: 'Invalid email or password' });
           }
           res.send({ token: generateToken(user), user: user.toJSON() });
@@ -222,27 +221,34 @@ exports.signupAdmin=function (req,res) {
 
 
 exports.signupPost = function(req, res, next) {
-  req.assert('name', 'Name cannot be blank').notEmpty();
-  req.assert('email', 'Email is not valid').isEmail();
-  req.assert('email', 'Email cannot be blank').notEmpty();
-  req.assert('password', 'Password must be at least 4 characters long').len(4);
-  req.sanitize('email').normalizeEmail({ remove_dots: false });
-
-  var errors = req.validationErrors();
-
-  if (errors) {
-    return res.status(400).send(errors);
-  }
-
+  // req.assert('name', 'Name cannot be blank').notEmpty();
+  // req.assert('email', 'Email is not valid').isEmail();
+  // req.assert('email', 'Email cannot be blank').notEmpty();
+  // req.assert('password', 'Password must be at least 4 characters long').len(4);
+  // req.sanitize('email').normalizeEmail({ remove_dots: false });
+  //
+  // var errors = req.validationErrors();
+  //
+  // if (errors) {
+  //   return res.status(400).send(errors);
+  // }
+  console.log("inside signup");
   new User({
-    name: req.body.name,
-    email: req.body.email,
-    password: req.body.password,
-    UserType:"1000"
-  }).save()
+    FirstName: req.body.FirstName,
+    FamilyName:req.body.FamilyName,
+    PersonalEmail:req.body.PersonalEmail,
+    Phone:req.body.Phone,
+    password:req.body.password,
+    UserAccountType:1000,
+    userVerfiedByEmail:false,
+    userVerfiedByCorp:true,
+    userVerfiedByAdmin:true,
+    userVerfiedBySms:true,
+    companyProfiles_id:1
+}).save()
     .then(function(user) {
         console.log("send token was reached in backend");
-        userEmailSignup=req.body.email;
+        userEmailSignup=req.body.PersonalEmail;
         userTempEmailId=user.id;
         res.send({ token: generateToken(user), user: user });
         console.log("token sent started creating the mail");
