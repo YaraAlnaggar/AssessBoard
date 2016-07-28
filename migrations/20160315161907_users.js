@@ -81,7 +81,7 @@ exports.up = function(knex, Promise) {
       table.dateTime('RequestDate');
 
 
-      table.integer('AmountOfTokenRequested').unique();
+      table.integer('AmountOfTokenRequested');
       table.integer('promotionCode');
 
 

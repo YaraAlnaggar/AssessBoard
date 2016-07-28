@@ -24,6 +24,8 @@ var contactController = require('./controllers/contact');
 var personalityPlusController = require('./controllers/personalityPlusController');
 var companyController = require('./controllers/company');
 var productController=require("./controllers/product");
+var purchaseRequestsController=require("./controllers/purchaseRequest");
+var activationController=require("./controllers/activations");
 
 
 
@@ -68,7 +70,7 @@ app.use(function(req, res, next) {
 app.post('/contact', contactController.contactPost);
 app.put('/account', userController.ensureAuthenticated, userController.accountPut);
 app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
-app.post('/signup', userController.signupPost,userController.SendEmail); 
+app.post('/signup', userController.signupPost,userController.SendEmail);
 app.post('/login', userController.loginPost);
 app.post('/forgot', userController.forgotPost);
 app.post('/reset/:token', userController.resetPost);
@@ -90,6 +92,10 @@ app.get("/verify",userController.emailVerify); // verify by email
 
 app.post("/admin/addproduct",userController.ensureAuthenticated,productController.addproduct);
 app.post("/admin/Company",userController.ensureAuthenticated,companyController.addCompany);
+//app.post("/admin/verfiyPurchase",userController.ensureAuthenticated,)
+app.post("/activate",userController.ensureAuthenticated,activationController.activateTokens);
+
+app.post("/purchase",userController.ensureAuthenticated,purchaseRequestsController.requestPurchase);
 
 app.get('*', function(req, res) {
   res.redirect('/#' + req.originalUrl);

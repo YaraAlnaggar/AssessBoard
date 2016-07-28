@@ -105,20 +105,20 @@ angular.module('MyApp', ['ngRoute', 'satellizer'])
         $location.path('/login');
       }
       $rootScope.userTokenObject=$auth.getPayload();
-      $rootScope.userTokenLevel=parseInt($rootScope.userTokenObject.level, 10);
+      $rootScope.userTokenLevel=$rootScope.userTokenObject.level;
     }
     function loginRequiredAdmin($location, $auth , $rootScope) {
-      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<3500 ) { // loged in as a admin
+      if (!$auth.isAuthenticated() ||  $auth.getPayload().level<3500 ) { // loged in as a admin
         $location.path('/login');
       }
     }
     function loginRequiredEmployee($location, $auth , $rootScope) {
-      if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<3500) { // loged in as a admin
+      if (!$auth.isAuthenticated() || $auth.getPayload().level<3500) { // loged in as a admin
       $location.path('/login');
     }
   }
       function loginRequiredCorporate($location, $auth , $rootScope) {
-        if (!$auth.isAuthenticated() ||  $rootScope.userTokenLevel<2500) { // loged in as a admin
+        if (!$auth.isAuthenticated() ||  $auth.getPayload().level<2500) { // loged in as a admin
         $location.path('/login');
       }
     }

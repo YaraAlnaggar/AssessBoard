@@ -9,7 +9,7 @@ exports.up = function(knex, Promise) {
     //   table.dateTime('RequestDate');
     //
     //
-    //   table.integer('AmountOfTokenRequested').unique();
+    //   table.integer('AmountOfTokenRequested');
     //   table.integer('promotionCode');
     //
     //   table.integer('qoutas_id').unsigned().notNull().references('qoutas.id');

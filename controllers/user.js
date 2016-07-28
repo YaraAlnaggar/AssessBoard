@@ -7,6 +7,7 @@ var request = require('request');
 var qs = require('querystring');
 var User = require('../models/User');
 var nodemailer = require("nodemailer");
+var sessionLog=require('../models/sessionLogsModel');
 
 var dotenv = require('dotenv');
 dotenv.load();
@@ -14,14 +15,16 @@ dotenv.load();
 
 var userTempEmailId,mailOptions,host,link,userEmailSignup; // related to email varify function
 
-function generateToken(user) {
+function generateToken(user,sessionObject) {
 
   var payload = {
     iss: 'assessBoard',
     sub: user.id,
-    name:user.attributes.name,
-    email:user.attributes.email,
-    level:user.attributes.UserType,
+    name:user.attributes.FamilyName,
+    email:user.attributes.PersonalEmail,
+    level:user.attributes.UserAccountType,
+    premission:"unkown",
+    sessionId:sessionObject.id,
     iat: moment().unix(),
     exp: moment().add(1, 'days').unix()
   };
@@ -127,9 +130,8 @@ exports.ensureAuthenticated = function(req, res, next) {
 };
 exports.upgradeUser= function (req,res) {
   // body...
-  console.log(req);
 
-
+  if(req.tokenObject.level < 3500) return res.status(401).json({msg:"you don't have the authority to do this action"});
   new User({ PersonalEmail:req.body.PersonalEmail }).fetch().then(function(user) {
       user.save({UserAccountType: req.body.level}, { patch: true }).then(function (upgradedUser) {
         // body...
@@ -209,7 +211,19 @@ exports.signupAdmin=function (req,res) {
           if (!isMatch || user.attributes.userVerfiedByEmail===false) {
             return res.status(401).send({ msg: 'Invalid email or password' });
           }
-          res.send({ token: generateToken(user), user: user.toJSON() });
+          new sessionLog({
+            // LoginTime:,
+            // LogoutTime:,
+            user_id:user.attributes.id
+          }).save().then(function(newSessionLog){
+            if(!newSessionLog)return res.status(500);
+            sessionObject=newSessionLog.attributes;
+            return res.send({ token: generateToken(user,sessionObject), user: user.toJSON() });
+
+          }).catch(function(error){
+            console.log(error);
+            return res.status(500);
+          });
         });
       });
   };
