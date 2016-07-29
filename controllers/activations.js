@@ -13,7 +13,8 @@ var product = require('../models/productsDefineModel');
 var activation = require('../models/activationsModel');
 var token = require('../models/examTokensModel');
 var uuid = require('node-uuid');
-
+var config = require('../knexfile');
+var knex = require('knex')(config);
 
 
 var nodemailer = require("nodemailer");
@@ -29,7 +30,7 @@ dotenv.load();
 
 
 exports.activateTokens = function(req, res) {
-
+var arrayToken=[];
     // var decodedAuthToken = jwt_decode(token);
     // console.log(req.tokenObject);
     if (req.tokenObject.level < 2500) return res.status(401).json({
@@ -57,27 +58,22 @@ exports.activateTokens = function(req, res) {
                     }).save().then(function(newActivation) {
                         var counter = 0;
                         for (var i = 0; i < req.body.QuntatityToActivate; i++) {
-                            // var payload = {
-                            //     iss: 'assessTalentMagmentExam',
-                            //     name: userMakingTheRequest.attributes.CompanyName,
-                            //     examType: req.body.productName,
-                            //     uniqueString: uuid.v1(),
-                            //     premission: "unkown",
-                            //     iat: moment().unix(),
-                            //     exp: moment().add(60, 'days').unix()
-                            // };
-                            // var tokenGenreated = jwt.sign(payload, process.env.TOKEN_SECRET);
-                            new token({
+                            arrayToken.push({
                                 TokenString:  uuid.v1(),
                                 sessionLogs_id: req.tokenObject.sessionId,
                                 activations_id: newActivation.attributes.id
-                            }).save().then(function(newToken) {
-                                if (newToken !== null) counter = counter + 1;
-
                             });
 
-
                         }
+
+                        knex.insert(arrayToken, 'id').into('examTokens').then(function(someting){
+                          return res.send("tokens genreated");
+                        }).catch(function(error){
+                          console.log(error);
+                          res.statu(500).send();
+                        });
+
+
                         qoutaRequested.save({
                             ConsumedUnits: qoutaRequested.attributes.ConsumedUnits + req.body.QuntatityToActivate
                         }).then(function(updatedQouta) {
