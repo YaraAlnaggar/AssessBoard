@@ -15,7 +15,7 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('billingHistory', function(table) {
       table.increments("id").primary();
       table.integer('Invoice');
-      table.dateTime('InvoiceDate');
+      table.integer('InvoiceDate');
       table.integer('Paid');
       table.boolean('isPaid');
       table.integer('Unit');
@@ -60,8 +60,8 @@ exports.up = function(knex, Promise) {
       table.integer('PurchasedUnits');
       table.integer('ConsumedUnits');
       table.integer('DiscountRate');
-      table.dateTime('StartDate');
-      table.dateTime('ExpiryDate');
+      table.integer('StartDate');
+      table.integer('ExpiryDate');
       table.string('PaymentMethod');
       table.string('PromotionCode');
       table.boolean('isActivated');
@@ -76,17 +76,14 @@ exports.up = function(knex, Promise) {
       table.increments("id").primary();
       table.boolean("ApprovedByAssess");
       table.boolean("ApprovedByBank");
-      table.dateTime('ApprovalDate');
+      table.integer('ApprovalDate');
       table.boolean("RequestIsDone");
-      table.dateTime('RequestDate');
+      table.integer('RequestDate');
 
-
+      table.string('PaymentMethod_OnlineOffline');
       table.integer('AmountOfTokenRequested');
       table.integer('promotionCode');
-
-
       table.integer('sessionLogs_id').unsigned().notNull().references('sessionLogs.id');
-
       table.integer('qoutas_id').unsigned().notNull().references('qoutas.id');
 
       table.timestamps();
@@ -97,8 +94,8 @@ exports.up = function(knex, Promise) {
       table.string('PromotionCode');
       table.integer('RateGiven');
       table.integer('DefinedQuntity');
-      table.dateTime('InitializeDate');
-      table.dateTime('ExpiryDate');
+      table.integer('InitializeDate');
+      table.integer('ExpiryDate');
       table.string('DefinedService');
       table.integer('CompanyIdRestrictedTo');
       table.integer('NumberUsed');
@@ -114,7 +111,7 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTable('productsDefine', function(table) {
       table.increments("id").primary();
-      table.string('ServiceName');
+      table.string('ServiceName').unique();
       table.integer('Price');
       table.integer('thershold');
 
@@ -160,9 +157,9 @@ exports.up = function(knex, Promise) {
     knex.schema.createTable('activations', function(table) {
       table.increments("id").primary();
       table.boolean("AssessmentModuleEnabled");
-      table.dateTime('ExpiryDate');
+      table.integer('ExpiryDate');
       table.string('Taken');
-      table.dateTime('TimeStamp');
+      table.integer('TimeStamp');
       table.integer('NumberOfTokensOrdered');
       table.integer('TotalPrice');
 
@@ -174,7 +171,7 @@ exports.up = function(knex, Promise) {
 
     knex.schema.createTable('companyProfiles', function(table) {
       table.increments("id").primary();
-      table.string('CompanyName');
+      table.string('CompanyName').unique();
       table.integer('CompanyAccountType');
       table.string('CompanyUniqueToken').unique();
       table.timestamps();
@@ -195,7 +192,7 @@ exports.up = function(knex, Promise) {
       table.boolean("userVerfiedByCorp");
       table.boolean("userVerfiedByAdmin");
       table.boolean("userVerfiedBySms");
-      table.dateTime("userVerfiicationDate");
+      table.integer("userVerficationDate");
       table.string('gender');
       table.string('location');
       table.string('website');

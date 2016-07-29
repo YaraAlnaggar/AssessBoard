@@ -15,17 +15,13 @@ dotenv.load();
 
 // Models
 var User = require('./models/User');
-var Grade =require('./models/grade');
-
 // Controllers
 var userController = require('./controllers/user');
-var gradeController = require('./controllers/grades');
 var contactController = require('./controllers/contact');
-var personalityPlusController = require('./controllers/personalityPlusController');
 var companyController = require('./controllers/company');
-var productController=require("./controllers/product");
-var purchaseRequestsController=require("./controllers/purchaseRequest");
-var activationController=require("./controllers/activations");
+var productController = require("./controllers/product");
+var purchaseRequestsController = require("./controllers/purchaseRequest");
+var activationController = require("./controllers/activations");
 
 
 
@@ -36,41 +32,45 @@ app.set('port', process.env.PORT || 3000);
 app.use(compression());
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+    extended: false
+}));
 app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(function(req, res, next) {
-  req.isAuthenticated = function() {
-    var token = (req.headers.authorization && req.headers.authorization.split(' ')[1]) || req.cookies.token;
-    //console.log("token :: "+token)
-    try {
-      req.tokenObject= jwt.verify(token, process.env.TOKEN_SECRET);
-      return req.tokenObject;
-    } catch (err) {
-      console.log(err);
-      return false;
-    }
-  };
+    req.isAuthenticated = function() {
+        var token = (req.headers.authorization && req.headers.authorization.split(' ')[1]) || req.cookies.token;
+        //console.log("token :: "+token)
+        try {
+            req.tokenObject = jwt.verify(token, process.env.TOKEN_SECRET);
+            return req.tokenObject;
+        } catch (err) {
+            console.log(err);
+            return false;
+        }
+    };
 
-  if (req.isAuthenticated()) {
-    var payload = req.isAuthenticated();
-    new User({ id: payload.sub })
-      .fetch()
-      .then(function(user) {
-        req.user = user;
+    if (req.isAuthenticated()) {
+        var payload = req.isAuthenticated();
+        new User({
+                id: payload.sub
+            })
+            .fetch()
+            .then(function(user) {
+                req.user = user;
+                next();
+            });
+    } else {
         next();
-      });
-  } else {
-    next();
-  }
+    }
 });
 
 app.post('/contact', contactController.contactPost);
 app.put('/account', userController.ensureAuthenticated, userController.accountPut);
 app.delete('/account', userController.ensureAuthenticated, userController.accountDelete);
-app.post('/signup', userController.signupPost,userController.SendEmail);
+app.post('/signup', userController.signupPost, userController.SendEmail);
 app.post('/login', userController.loginPost);
 app.post('/forgot', userController.forgotPost);
 app.post('/reset/:token', userController.resetPost);
@@ -81,36 +81,33 @@ app.post('/auth/google', userController.authGoogle);
 app.get('/auth/google/callback', userController.authGoogleCallback);
 
 
-app.get('/reports',userController.ensureAuthenticated,gradeController.allGrades); // the added route for loading all the data from the database
-app.post('/GetBytoken',userController.ensureAuthenticated ,personalityPlusController.showpersonalityPlusBytoken); // get the data using the token  //  REMOVED FOR THE FREE HEROKU
-app.post('/grades/add',userController.ensureAuthenticated ,gradeController.addGrade); // add grades to user
 
-app.post('/admin/addAdmin',userController.ensureAuthenticated  ,userController.signupAdmin); // add grades to user
-app.post('/admin/upgradeUser',userController.ensureAuthenticated,userController.upgradeUser);
+app.post('/admin/addAdmin', userController.ensureAuthenticated, userController.signupAdmin); // add grades to user
+app.post('/admin/upgradeUser', userController.ensureAuthenticated, userController.upgradeUser);
 
-app.get("/verify",userController.emailVerify); // verify by email
+app.get("/verify", userController.emailVerify); // verify by email
 
-app.post("/admin/addproduct",userController.ensureAuthenticated,productController.addproduct);
-app.post("/admin/Company",userController.ensureAuthenticated,companyController.addCompany);
-//app.post("/admin/verfiyPurchase",userController.ensureAuthenticated,)
-app.post("/activate",userController.ensureAuthenticated,activationController.activateTokens);
+app.post("/admin/addproduct", userController.ensureAuthenticated, productController.addproduct);
+app.post("/admin/Company", userController.ensureAuthenticated, companyController.addCompany);
+app.post("/admin/verfiyPurchase", userController.ensureAuthenticated, purchaseRequestsController.verifyPurchase);
+app.post("/activate", userController.ensureAuthenticated, activationController.activateTokens);
 
-app.post("/purchase",userController.ensureAuthenticated,purchaseRequestsController.requestPurchase);
+app.post("/purchase", userController.ensureAuthenticated, purchaseRequestsController.requestPurchase);
 
 app.get('*', function(req, res) {
-  res.redirect('/#' + req.originalUrl);
+    res.redirect('/#' + req.originalUrl);
 });
 
 // Production error handler
 if (app.get('env') === 'production') {
     app.use(function(err, req, res, next) {
-    console.error(err.stack);
-    res.sendStatus(err.status || 500);
-  });
+        console.error(err.stack);
+        res.sendStatus(err.status || 500);
+    });
 }
 
 app.listen(app.get('port'), function() {
-  console.log('Express server listening on port ' + app.get('port'));
+    console.log('Express server listening on port ' + app.get('port'));
 });
 
 module.exports = app;

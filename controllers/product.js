@@ -15,17 +15,22 @@ var uuid = require('node-uuid');
 var dotenv = require('dotenv');
 dotenv.load();
 
-exports.addproduct=function(req,res){
+exports.addproduct = function(req, res) {
 
-  // var decodedAuthToken = jwt_decode(token);
-  console.log(req.tokenObject);
-  if(req.tokenObject.level < 3500) return res.status(401).json({msg:"you don't have the authority to do this action"});
-  //new comanpany
-   new product({
-      ServiceName: req.body.ServiceName,
-      Price:req.body.Price,
+    // var decodedAuthToken = jwt_decode(token);
+    console.log(req.tokenObject);
+    if (req.tokenObject.level < 3500) return res.status(401).json({
+        msg: "you don't have the authority to do this action"
+    });
+    //new comanpany
+    new product({
+        ServiceName: req.body.ServiceName,
+        Price: req.body.Price,
     }).save().then(function(product) {
         res.json(product);
+    }).catch(function(error){
+      console.log(error);
+      return res.status(400).send();
     });
 
- };
+};
