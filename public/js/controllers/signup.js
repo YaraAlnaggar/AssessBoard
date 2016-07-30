@@ -4,7 +4,7 @@ angular.module('MyApp')
         $scope.signup = function() {
 
             $scope.EmailIsBeingSentMsg = "An Email is being sent to " + $scope.user.PersonalEmail + " Please confirm and go to the login Page";
-            if ($scope.companyCheck === true) $scope.user.companyID = "none";
+           if ($scope.companyCheck === true) $scope.user.companyID = "none";
             $auth.signup($scope.user)
                 .then(function(response) {
                     //$auth.setToken(response);

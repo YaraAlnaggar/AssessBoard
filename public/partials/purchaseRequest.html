@@ -4,11 +4,30 @@
       <div ng-if="messages.error" role="alert" class="alert alert-danger">
         <div ng-repeat="error in messages.error">{{error.msg}}</div>
       </div>
-      <form ng-submit="FetchData()">
-        <legend>Get data </legend>
+      <form ng-submit="purchaseExams()">
+        <legend>Purchase New Tokens</legend>
+
         <div class="form-group">
-          <label for="name">User</label>
+          <label class="col-sm-4">Payment Method</label>
+          <div class="col-sm-4">
+            <label class="radio-inline radio col-sm-4">
+              <input type="radio" name="PaymentMethod_OnlineOffline" value="Online" ng-checked="PaymentMethod_OnlineOffline === 'Online'"><span>Online </span>
+            </label>
+            <label class="radio-inline col-sm-4">
+              <input type="radio" name="PaymentMethod_OnlineOffline" value="Offline" ng-checked="PaymentMethod_OnlineOffline === 'offline'"><span>Offline</span>
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" name="productName" id="productName" placeholder="Exam Type" class="form-control" ng-model="purchaseRequest.productName" autofocus>
+        </div>
+        <div class="form-group">
+          <label for="name">Qouta Type </label>
           <input type="text" name="name" id="name" placeholder="token" class="form-control" ng-model="user.token" autofocus>
+        </div>
+        <div class="form-group">
+          <label for="number">Number of exams requested</label>
+          <input type="number" name="NumberOfTokensOrdered" id="NumberOfTokensOrdered" placeholder="Number of exam keys to order" class="form-control" ng-model="purchaseRequest.unitesRequested" autofocus>
         </div>
         <div ng-show="showDataTokenBy">
           <h1>all the data </h1><p ng-bind="returnedDataString"></p>
@@ -16,7 +35,7 @@
           <h1>email </h1><p ng-bind="returnedData.email"></p>
           <h1>the name </h1><p ng-bind="returnedData.name"></p>
           </div>
-        <button type="submit" class="btn btn-success">Search</button>
+        <button type="submit" class="btn btn-success">Order</button>
       </form>
       <div class="hr-title"><span>By the Hodz</span></div>
     </div>
