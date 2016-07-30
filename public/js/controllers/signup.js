@@ -3,7 +3,7 @@ angular.module('MyApp')
         $scope.companyCheck = false;
         $scope.signup = function() {
 
-            $scope.EmailIsBeingSentMsg = "An Email is being sent to " + $scope.user.PersonalEmail + " Please confirm and go to the login Page";
+            $scope.EmailIsBeingSentMsg = "Your request as  " + $scope.user.PersonalEmail + " Is being processed this app still in pre alpha stage so its still slow";
            if ($scope.companyCheck === true) $scope.user.companyID = "none";
             $auth.signup($scope.user)
                 .then(function(response) {
