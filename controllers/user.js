@@ -6,8 +6,12 @@ var moment = require('moment');
 var request = require('request');
 var qs = require('querystring');
 var User = require('../models/User');
+var company = require('../models/companyProfilesModel');
 var nodemailer = require("nodemailer");
 var sessionLog = require('../models/sessionLogsModel');
+var uuid = require('node-uuid');
+
+
 
 var dotenv = require('dotenv');
 dotenv.load();
@@ -40,9 +44,9 @@ exports.SendEmail = function(req, res) {
 
     // rand=Math.floor((Math.random() * 100) + 54);
     host = req.get('host');
-    link = "http://" + req.get('host') + "/verify?id=" + userTempEmailId + "&email=" + userEmailSignup;
+    link = "http://" + req.get('host') + "/verify?id=" + req.body.userTempEmailId + "&email=" + req.body.PersonalEmail;
     mailOptions = {
-        to: userEmailSignup,
+        to: req.body.PersonalEmail,
         from: process.env.SIGNUPMAILSERVER_EMAIL,
         subject: "Please confirm your Email account",
         html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
@@ -80,7 +84,7 @@ exports.SendEmail = function(req, res) {
 
         } else {
             console.log("Message sent: " + response.message);
-            res.end("sent");
+            res.json({msg:"A email was sent Successfully to you "});
         }
     });
 };
@@ -276,43 +280,99 @@ exports.signupPost = function(req, res, next) {
     // req.assert('password', 'Password must be at least 4 characters long').len(4);
     // req.sanitize('email').normalizeEmail({ remove_dots: false });
     //
-    // var errors = req.validationErrors();
-    //
-    // if (errors) {
-    //   return res.status(400).send(errors);
-    // }
+    req.assert('companyID', 'Email cannot be blank').notEmpty();
+
+    var errors = req.validationErrors();
+
+    if (errors) {
+      return res.status(400).send(errors);
+    }
     console.log("inside signup");
-    new User({
-            FirstName: req.body.FirstName,
-            FamilyName: req.body.FamilyName,
-            PersonalEmail: req.body.PersonalEmail,
-            Phone: req.body.Phone,
-            password: req.body.password,
-            UserAccountType: 1000,
-            userVerfiedByEmail: false,
-            userVerfiedByCorp: true,
-            userVerfiedByAdmin: true,
-            userVerfiedBySms: true,
-            companyProfiles_id: req.body.companyID || 1
-        }).save()
-        .then(function(user) {
-            console.log("send token was reached in backend");
-            userEmailSignup = req.body.PersonalEmail;
-            userTempEmailId = user.id;
-            res.send({
-                token: generateToken(user),
-                user: user
+
+    var newUserCompanyID = 0;
+    new company({
+        CompanyUniqueToken: req.body.companyID
+    }).fetch().then(function(newUserCompanyObject) {
+        if (newUserCompanyObject === null) {
+            if (req.body.companyID !== "none") return res.status(404).json({
+                msg: "The company ID was not found recheck for the ID or  click on the check box if are not here for recruitment from a specific company"
             });
-            console.log("token sent started creating the mail");
-            next();
-        })
-        .catch(function(err) {
-            if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
-                return res.status(400).send({
-                    msg: 'The email address you have entered is already associated with another account.'
+            new company({
+                CompanyName: "Assess-Indviduals"
+            }).fetch().then(function(NoCompanyUser) {
+                if (NoCompanyUser.attributes.id === null) return res.status(500);
+                newUserCompanyID = NoCompanyUser.attributes.id;
+                console.log(newUserCompanyID + " the right function");
+                new User({
+                        FirstName: req.body.FirstName,
+                        UserID: uuid.v1(),
+                        FamilyName: req.body.FamilyName,
+                        PersonalEmail: req.body.PersonalEmail,
+                        Phone: req.body.Phone,
+                        password: req.body.password,
+                        UserAccountType: 1000,
+                        userVerfiedByEmail: false,
+                        userVerfiedByCorp: true,
+                        userVerfiedByAdmin: true,
+                        userVerfiedBySms: true,
+                        companyProfiles_id: newUserCompanyID
+                    }).save()
+                    .then(function(user) {
+                        console.log("send token was reached in backend");
+                        req.body.userTempEmailId = user.attributes.id;
+                        console.log("token sent started creating the mail");
+                        next();
+                    })
+                    .catch(function(err) {
+                        console.log(err);
+                        if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
+                            return res.status(400).send({
+                                msg: 'The email address you have entered is already associated with another account.'
+                            });
+                        }
+                    });
+
+            }).catch(function(error) {
+                console.log(error);
+                return res.status(500).send();
+            });
+        } else {
+            newUserCompanyID = newUserCompanyObject.attributes.id;
+            new User({
+                    FirstName: req.body.FirstName,
+                    UserID: uuid.v1(),
+                    FamilyName: req.body.FamilyName,
+                    PersonalEmail: req.body.PersonalEmail,
+                    Phone: req.body.Phone,
+                    password: req.body.password,
+                    UserAccountType: 1000,
+                    userVerfiedByEmail: false,
+                    userVerfiedByCorp: true,
+                    userVerfiedByAdmin: true,
+                    userVerfiedBySms: true,
+                    companyProfiles_id: newUserCompanyID
+                }).save()
+                .then(function(user) {
+                    console.log("send token was reached in backend");
+                    req.body.userTempEmailId = user.attributes.id;
+                    console.log("token sent started creating the mail");
+                    next();
+                })
+                .catch(function(err) {
+                    console.log(err);
+                    if (err.code === 'ER_DUP_ENTRY' || err.code === '23505') {
+                        return res.status(400).send({
+                            msg: 'The email address you have entered is already associated with another account.'
+                        });
+                    }
                 });
-            }
-        });
+
+        }
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(500).send();
+    });
+
 };
 
 

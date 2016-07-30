@@ -6,26 +6,48 @@ var moment = require('moment');
 var request = require('request');
 var qs = require('querystring');
 var company = require('../models/companyProfilesModel');
-var nodemailer = require("nodemailer");
+var User = require('../models/User');
 var uuid = require('node-uuid');
 
-// var jwtDecode = require('jwt-decode');
 
 
-var dotenv = require('dotenv');
-dotenv.load();
+exports.addCompany = function(req, res) {
 
-exports.addCompany=function(req,res){
+    console.log(req.tokenObject);
 
-  // var decodedAuthToken = jwt_decode(token);
-  console.log(req.tokenObject);
-  if(req.tokenObject.level < 3500) return res.status(401).json({msg:"you don't have the authority to do this action"});
-  //new comanpany
-   new company({
-      CompanyName: req.body.CompanyName,
-      CompanyUniqueToken:uuid.v1()
+    if (req.tokenObject.level < 3500) return res.status(401).json({
+        msg: "you don't have the authority to do this action"
+    });
+    //new comanpany
+    new company({
+        CompanyName: req.body.CompanyName,
+        CompanyUniqueToken: uuid.v1()
     }).save().then(function(company) {
         res.json(company);
     });
 
- };
+};
+exports.resetCompanyID = function(req, res) {
+    if (req.tokenObject.email < 2500) return res.status(401).json({
+        msg: "you don't have the authority to do this action"
+    });
+    new User({
+        PersonalEmail: req.tokenObject.email
+    }).fetch().then(function(targtedUser) {
+        new company({
+            id: targtedUser.attributes.companyProfiles_id
+        }).save({
+            CompanyUniqueToken: uuid.v1()
+        }).then(function(newCompanyObject) {
+            if (newCompanyObject === null) return res.status(500).send();
+            return res.send(newCompanyObject.attributes.CompanyUniqueToken);
+        }).catch(function(error) {
+            console.log(error);
+            return res.status(500).send();
+        }).catch(function(error) {
+            console.log(error);
+            return res.status(500).send();
+        });
+    });
+
+};

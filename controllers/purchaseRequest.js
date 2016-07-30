@@ -12,13 +12,6 @@ var User = require('../models/User');
 var product = require('../models/productsDefineModel');
 
 
-var nodemailer = require("nodemailer");
-var uuid = require('node-uuid');
-
-
-var dotenv = require('dotenv');
-dotenv.load();
-
 
 
 exports.requestPurchase = function(req, res) {

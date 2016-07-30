@@ -28,9 +28,9 @@ exports.addproduct = function(req, res) {
         Price: req.body.Price,
     }).save().then(function(product) {
         res.json(product);
-    }).catch(function(error){
-      console.log(error);
-      return res.status(400).send();
+    }).catch(function(error) {
+        console.log(error);
+        return res.status(400).send();
     });
 
 };

@@ -17,22 +17,15 @@ var config = require('../knexfile');
 var knex = require('knex')(config);
 
 
-var nodemailer = require("nodemailer");
 var uuid = require('node-uuid');
 
-// var jwtDecode = require('jwt-decode');
-
-
-var dotenv = require('dotenv');
-dotenv.load();
 // productName
 // QuntatityToActivate
 
 
 exports.activateTokens = function(req, res) {
-var arrayToken=[];
-    // var decodedAuthToken = jwt_decode(token);
-    // console.log(req.tokenObject);
+    var arrayToken = [];
+    
     if (req.tokenObject.level < 2500) return res.status(401).json({
         msg: "you don't have the authority to do this action"
     });
@@ -59,18 +52,18 @@ var arrayToken=[];
                         var counter = 0;
                         for (var i = 0; i < req.body.QuntatityToActivate; i++) {
                             arrayToken.push({
-                                TokenString:  uuid.v1(),
+                                TokenString: uuid.v1(),
                                 sessionLogs_id: req.tokenObject.sessionId,
                                 activations_id: newActivation.attributes.id
                             });
 
                         }
 
-                        knex.insert(arrayToken, 'id').into('examTokens').then(function(someting){
-                          return res.send("tokens genreated");
-                        }).catch(function(error){
-                          console.log(error);
-                          res.statu(500).send();
+                        knex.insert(arrayToken, 'id').into('examTokens').then(function(someting) {
+                            return res.send("tokens genreated");
+                        }).catch(function(error) {
+                            console.log(error);
+                            res.statu(500).send();
                         });
 
 

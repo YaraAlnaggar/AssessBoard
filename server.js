@@ -83,16 +83,18 @@ app.get('/auth/google/callback', userController.authGoogleCallback);
 
 
 app.post('/admin/addAdmin', userController.ensureAuthenticated, userController.signupAdmin); // add grades to user
-app.post('/admin/upgradeUser', userController.ensureAuthenticated, userController.upgradeUser);
+app.post('/admin/upgradeUser', userController.ensureAuthenticated, userController.upgradeUser); // upgrade user privilages
 
 app.get("/verify", userController.emailVerify); // verify by email
 
-app.post("/admin/addproduct", userController.ensureAuthenticated, productController.addproduct);
-app.post("/admin/Company", userController.ensureAuthenticated, companyController.addCompany);
-app.post("/admin/verfiyPurchase", userController.ensureAuthenticated, purchaseRequestsController.verifyPurchase);
-app.post("/activate", userController.ensureAuthenticated, activationController.activateTokens);
+app.post("/admin/addproduct", userController.ensureAuthenticated, productController.addproduct); // add products to be used in purchase
+app.post("/admin/Company", userController.ensureAuthenticated, companyController.addCompany); // add another comapny account
+app.post("/admin/verfiyPurchase", userController.ensureAuthenticated, purchaseRequestsController.verifyPurchase); // verfiy purchase of a product in both online and offline
 
+
+app.post("/activate", userController.ensureAuthenticated, activationController.activateTokens);
 app.post("/purchase", userController.ensureAuthenticated, purchaseRequestsController.requestPurchase);
+app.get("/reset", userController.ensureAuthenticated,companyController.resetCompanyID);
 
 app.get('*', function(req, res) {
     res.redirect('/#' + req.originalUrl);
