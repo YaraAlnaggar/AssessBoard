@@ -35,7 +35,7 @@
                     <div class="form-group">
                         <label for="name">RequestID </label>
                         </br>
-                        <input type="txt" name="RequestID" id="RequestID" placeholder="RequestID" class="form-control" ng-model="verifyRequest" autofocus>
+                        <input type="number" name="RequestID" id="RequestID" placeholder="RequestID" class="form-control" ng-model="VerifyRequestObject.RequestID" autofocus>
                         </br>
 
                         <button type="submit" class="btn btn-success">Verify</button>
@@ -58,11 +58,11 @@
                 <div class="form-group">
                     <label for="name">Company Name </label>
                     </br>
-                    <input type="txt" name="CompanyName" id="CompanyName" placeholder="Company Name" class="form-control" ng-model="companyName" autofocus>
+                    <input type="txt" name="CompanyName" id="CompanyName" placeholder="Company Name" class="form-control" ng-model="CompanyAddObject.CompanyName" autofocus>
                     </br>
 
                     <button type="submit" class="btn btn-success">Add </button>
-                    <p ng-bind="upgradeResult"></p>
+                    <p ng-bind="companyAdd"></p>
             </form>
             <div class="hr-title"><span>By the Hodz</span></div>
             </div>

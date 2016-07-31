@@ -2,6 +2,11 @@ angular.module('MyApp')
     .controller('purchaseRequestCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
         $scope.profile = $rootScope.currentUser;
 
+
+        $scope.purchaseExams=function(){
+
+        };
+
         $scope.FetchData = function() {
             viewData.getDataByToken($scope.user)
                 .then(function(response) {
