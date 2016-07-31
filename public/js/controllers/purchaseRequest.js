@@ -1,10 +1,12 @@
 angular.module('MyApp')
-    .controller('purchaseRequestCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
+    .controller('purchaseRequestCtrl', function($scope, $rootScope, $location, $window, $auth, viewData,purchase) {
         $scope.profile = $rootScope.currentUser;
 
 
         $scope.purchaseExams=function(){
-
+purchase.PurchaseOffline($scope.purchaseRequest).then(function(requestMade){
+  console.log(requestMade);
+});
         };
 
         $scope.FetchData = function() {

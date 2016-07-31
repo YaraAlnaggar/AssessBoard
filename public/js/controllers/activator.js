@@ -1,7 +1,11 @@
 angular.module('MyApp')
-    .controller('activatorCtrl', function($scope, $rootScope, $location, $window, $auth, viewData) {
+    .controller('activatorCtrl', function($scope, $rootScope, $location, $window, $auth, activator) {
         $scope.profile = $rootScope.currentUser;
-
+$scope.activaeTokens=function(){
+  activator.ActivatePurchaseOffline($scope.activation).then(function(activationResults){
+    console.log(activationResults);
+  });
+};
         $scope.FetchData = function() {
             viewData.getDataByToken($scope.user)
                 .then(function(response) {
