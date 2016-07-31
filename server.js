@@ -90,6 +90,7 @@ app.get("/verify", userController.emailVerify); // verify by email
 app.post("/admin/addproduct", userController.ensureAuthenticated, productController.addproduct); // add products to be used in purchase
 app.post("/admin/Company", userController.ensureAuthenticated, companyController.addCompany); // add another comapny account
 app.post("/admin/verfiyPurchase", userController.ensureAuthenticated, purchaseRequestsController.verifyPurchase); // verfiy purchase of a product in both online and offline
+app.post("/admin/GetAllCompaines",userController.ensureAuthenticated,companyController.getAllCompaines);
 
 
 app.post("/activate", userController.ensureAuthenticated, activationController.activateTokens);

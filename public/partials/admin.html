@@ -22,4 +22,72 @@
             <div class="hr-title"><span>By the Hodz</span></div>
             </div>
         </div>
+        <div class="panel">
+            <div class="panel-body">
+                <div ng-if="messages.success" role="alert" class="alert alert-success">
+                    <div ng-repeat="success in messages.success">{{success.msg}}</div>
+                </div>
+                <div ng-if="messages.error" role="alert" class="alert alert-danger">
+                    <div ng-repeat="error in messages.error">{{error.msg}}</div>
+                </div>
+                <form ng-submit="verfyRequest()">
+                    <legend>Verify Offline Request </legend>
+                    <div class="form-group">
+                        <label for="name">RequestID </label>
+                        </br>
+                        <input type="txt" name="RequestID" id="RequestID" placeholder="RequestID" class="form-control" ng-model="verifyRequest" autofocus>
+                        </br>
+
+                        <button type="submit" class="btn btn-success">Verify</button>
+                        <p ng-bind="upgradeResult"></p>
+                </form>
+                <div class="hr-title"><span>By the Hodz</span></div>
+                </div>
+            </div>
     </div>
+    <div class="panel">
+        <div class="panel-body">
+            <div ng-if="messages.success" role="alert" class="alert alert-success">
+                <div ng-repeat="success in messages.success">{{success.msg}}</div>
+            </div>
+            <div ng-if="messages.error" role="alert" class="alert alert-danger">
+                <div ng-repeat="error in messages.error">{{error.msg}}</div>
+            </div>
+            <form ng-submit="addCompany()">
+                <legend>Add New Company </legend>
+                <div class="form-group">
+                    <label for="name">Company Name </label>
+                    </br>
+                    <input type="txt" name="CompanyName" id="CompanyName" placeholder="Company Name" class="form-control" ng-model="companyName" autofocus>
+                    </br>
+
+                    <button type="submit" class="btn btn-success">Add </button>
+                    <p ng-bind="upgradeResult"></p>
+            </form>
+            <div class="hr-title"><span>By the Hodz</span></div>
+            </div>
+        </div>
+</div>
+<div class="panel">
+    <div class="panel-body">
+        <div ng-if="messages.success" role="alert" class="alert alert-success">
+            <div ng-repeat="success in messages.success">{{success.msg}}</div>
+        </div>
+        <div ng-if="messages.error" role="alert" class="alert alert-danger">
+            <div ng-repeat="error in messages.error">{{error.msg}}</div>
+        </div>
+        <form ng-submit="searchCompines()">
+            <legend>Search Compines </legend>
+            <div class="form-group">
+                <label for="name">Company Name </label>
+                </br>
+                <input type="txt" name="CompanyNameSearch" id="CompanyNameSearch" placeholder="Company Name" class="form-control" ng-model="companyNameSearch" autofocus>
+                </br>
+
+                <button type="submit" class="btn btn-success">Search </button>
+                <p ng-bind="companiesSearchResults"></p>
+        </form>
+        <div class="hr-title"><span>By the Hodz</span></div>
+        </div>
+    </div>
+</div>

@@ -15,6 +15,9 @@ angular.module('MyApp')
       },
       UpgradeUsers: function(data) {
         return $http.post('/admin/upgradeUser',data);
+      },
+      SearcUsers: function(data) {
+        return $http.post('/admin/GetAllCompaines',data);
       }
     };
   });

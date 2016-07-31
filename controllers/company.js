@@ -27,6 +27,19 @@ exports.addCompany = function(req, res) {
     });
 
 };
+exports.getAllCompaines=function(req,res){
+  if (req.tokenObject.level < 3500) return res.status(401).json({
+      msg: "you don't have the authority to do this action"
+  });
+  new company().fetchAll().then(function(AlLcompanies){
+    if(AlLcompanies.length>=1){
+      return res.json(AlLcompanies);
+    }
+  }).catch(function(error){
+    console.log(error);
+    return res.status(500).send();
+  });
+};
 exports.resetCompanyID = function(req, res) {
     if (req.tokenObject.email < 2500) return res.status(401).json({
         msg: "you don't have the authority to do this action"

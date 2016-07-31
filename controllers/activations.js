@@ -25,7 +25,7 @@ var uuid = require('node-uuid');
 
 exports.activateTokens = function(req, res) {
     var arrayToken = [];
-    
+
     if (req.tokenObject.level < 2500) return res.status(401).json({
         msg: "you don't have the authority to do this action"
     });
@@ -63,7 +63,7 @@ exports.activateTokens = function(req, res) {
                             return res.send("tokens genreated");
                         }).catch(function(error) {
                             console.log(error);
-                            res.statu(500).send();
+                            res.status(500).send();
                         });
 
 

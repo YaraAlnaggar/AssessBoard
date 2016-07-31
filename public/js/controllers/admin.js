@@ -15,5 +15,20 @@ angular.module('MyApp')
                     };
                 });
         };
+        $scope.searchCompines=  function(){
+          viewData.SearcUsers({}).then(function(response) {
+            console.log();
+
+            $scope.companiesSearchResults=JSON.stringify(response.data);
+              // $scope.messages = {
+              //     success: Array.isArray(response.data) ? response.data : [response.data]
+              // };
+          })
+          .catch(function(response) {
+              // $scope.messages = {
+              //     error: Array.isArray(response.data) ? response.data : [response.data]
+              // };
+          });
+        };
 
     });
