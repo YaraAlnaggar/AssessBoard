@@ -10,6 +10,7 @@ var company = require('../models/companyProfilesModel');
 var qouta = require('../models/qoutasModel');
 var User = require('../models/User');
 var product = require('../models/productsDefineModel');
+var bill = require("../models/billingHistoryModel");
 
 
 
@@ -60,15 +61,28 @@ exports.requestPurchase = function(req, res) {
                             //ApprovalDate:Date.now(),
                             AmountOfTokenRequested: req.body.unitesRequested,
                             //  protionCode:
-                            PaymentMethod_OnlineOffline:req.body.PaymentMethod_OnlineOffline,
+                            PaymentMethod_OnlineOffline: req.body.PaymentMethod_OnlineOffline,
                             sessionLogs_id: req.tokenObject.sessionId,
                             qoutas_id: newQouta.attributes.id
 
 
                         }).save().then(function(newPurchase) {
                             if (newQouta === null) return res.status(500).send();
-                            return res.json(newQouta);
-
+                            var PaidAttr = req.body.unitesRequested * productRequeted.attributes.Price;
+                            new bill({
+                                Paid: PaidAttr,
+                                isPaid: false,
+                                Discount: 0,
+                                SalexTax: 0,
+                                Total: PaidAttr,
+                                purchaseRequests_id: newPurchase.attributes.id
+                            }).save().then(function(newBill) {
+                                if (newBill === null) return res.status(500).send();
+                                return res.json(newBill);
+                            }).catch(function(error) {
+                                console.log(error);
+                                return res.status(500).send();
+                            });
 
                         }).catch(function(error) {
                             console.log(error);
@@ -82,16 +96,33 @@ exports.requestPurchase = function(req, res) {
                         ApprovedByBank: false,
                         //ApprovalDate:Date.now(),
                         AmountOfTokenRequested: req.body.unitesRequested,
-                        RequestIsDone:false,
+                        RequestIsDone: false,
                         //  protionCode:
                         sessionLogs_id: req.tokenObject.sessionId,
                         qoutas_id: qoutaRequested.attributes.id,
-                        PaymentMethod_OnlineOffline:req.body.PaymentMethod_OnlineOffline
+                        PaymentMethod_OnlineOffline: req.body.PaymentMethod_OnlineOffline
 
 
                     }).save().then(function(newPurchase) {
                         if (newPurchase === null) return res.status(500).send();
-                        return res.json(qoutaRequested);
+                        var PaidAttr = req.body.unitesRequested * productRequeted.attributes.Price;
+                        new bill({
+                            Paid: PaidAttr,
+                            isPaid: false,
+                            Discount: 0,
+                            SalexTax: 0,
+                            Total: PaidAttr,
+                            purchaseRequests_id: newPurchase.attributes.id
+
+                        }).save().then(function(newBill) {
+                            if (newBill === null) return res.status(500).send();
+                            return res.json(newBill);
+                        }).catch(function(error) {
+                            console.log(error);
+                            return res.status(500).send();
+                        });
+                        // return res.json(qoutaRequested);
+
 
 
                     }).catch(function(error) {
@@ -130,13 +161,13 @@ exports.verifyPurchase = function(req, res) {
     });
     new purchase({
         id: req.body.RequestID,
-        RequestIsDone:false,
+        RequestIsDone: false,
     }).fetch().then(function(toBeVerfiedPurchase) {
-      if(toBeVerfiedPurchase===null)return res.status(404).send();
+        if (toBeVerfiedPurchase === null) return res.status(404).send();
         toBeVerfiedPurchase.save({
             ApprovedByAssess: true,
-            RequestIsDone:true,
-          //  RequestDate:Date.now(),
+            RequestIsDone: true,
+            //  RequestDate:Date.now(),
         }).then(function(purchaseChanged) {
             if (purchaseChanged === null) return res.status(500).send();
             new qouta({
