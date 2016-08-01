@@ -59,7 +59,7 @@ exports.activateTokens = function(req, res) {
 
                         }
 
-                        knex.insert(arrayToken, 'id').into('examTokens').then(function(someting) {
+                        knex.insert(arrayToken, 'id').into('examTokens').then(function() {
                             return res.send("tokens genreated");
                         }).catch(function(error) {
                             console.log(error);
@@ -71,7 +71,7 @@ exports.activateTokens = function(req, res) {
                             ConsumedUnits: qoutaRequested.attributes.ConsumedUnits + req.body.QuntatityToActivate
                         }).then(function(updatedQouta) {
                             if (updatedQouta === null) return res.status(500).send();
-                            return res.json(updatedQouta);
+                            return res.json(arrayToken);
                         }).catch(function(error) {
                             console.log(error);
                             res.status(500).send();

@@ -34,6 +34,7 @@ exports.requestPurchase = function(req, res) {
         new User({
             PersonalEmail: req.tokenObject.email
         }).fetch().then(function(userMakingTheRequest) {
+          if(userMakingTheRequest===null)
             console.log(userMakingTheRequest);
 
             new qouta({
@@ -178,7 +179,10 @@ exports.verifyPurchase = function(req, res) {
                     isActivated: true
                 }).then(function(newQoutaMade) {
                     if (newQoutaMade === null) return res.status(404).send();
-                    return res.json(newQoutaMade);
+                    new bill({purchaseRequests_id:purchaseChanged.attributes.id}).save({isPaid:true}).then(function(newBill){
+                      if(newBill===null)return res.status(404).send();
+                      return res.json(newBill);
+                    });
                 }).catch(function(error) {
                     console.log(error);
                     return res.status(404).send();
