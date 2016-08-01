@@ -9,12 +9,16 @@ var dotenv = require('dotenv');
 var jwt = require('jsonwebtoken');
 var moment = require('moment');
 var request = require('request');
+var uuid = require('node-uuid');
+
 
 // Load environment variables from .env file
 dotenv.load();
 
 // Models
 var User = require('./models/User');
+var company = require('./models/companyProfilesModel');
+
 // Controllers
 var userController = require('./controllers/user');
 var contactController = require('./controllers/contact');
@@ -96,6 +100,18 @@ app.post("/admin/GetAllCompaines",userController.ensureAuthenticated,companyCont
 app.post("/activate", userController.ensureAuthenticated, activationController.activateTokens);
 app.post("/purchase", userController.ensureAuthenticated, purchaseRequestsController.requestPurchase);
 app.get("/reset", userController.ensureAuthenticated,companyController.resetCompanyID);
+app.get("/addAssessAccount",function(req,res){
+  new company({
+      CompanyName: "Assess-Indviduals",
+      CompanyUniqueToken: uuid.v1()
+  }).save().then(function(company) {
+      console.log("Compnay : "+company.attributes.CompanyName+" has been created!");
+      return res.send("Compnay : "+company.attributes.CompanyName+" has been created!");
+  }).catch(function(error){
+    console.log(error);
+    return res.status(500).send();
+  });
+});
 
 app.get('*', function(req, res) {
     res.redirect('/#' + req.originalUrl);
@@ -108,6 +124,7 @@ if (app.get('env') === 'production') {
         res.sendStatus(err.status || 500);
     });
 }
+
 
 app.listen(app.get('port'), function() {
     console.log('Express server listening on port ' + app.get('port'));
