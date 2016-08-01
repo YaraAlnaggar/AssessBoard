@@ -60,7 +60,7 @@ exports.activateTokens = function(req, res) {
                         }
 
                         knex.insert(arrayToken, 'id').into('examTokens').then(function() {
-                            return res.send("tokens genreated");
+                            return res.send(arrayToken);
                         }).catch(function(error) {
                             console.log(error);
                             res.status(500).send();

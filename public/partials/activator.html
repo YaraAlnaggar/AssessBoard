@@ -23,7 +23,10 @@
         </div>
         <div class="form-group">
           <div class="col-sm-offset-3 col-sm-4">
-            <button type="submit" class="btn btn-success">Add</button>
+            <button type="submit" class="btn btn-success" ng-csv="returnedData" filename="keys.csv"> Make and Download keys </button>
+            <p ng-bind="companiesSearchResults"></p>
+
+
           </div>
         </div>
       </form>

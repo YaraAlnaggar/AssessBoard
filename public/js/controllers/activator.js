@@ -4,37 +4,21 @@ angular.module('MyApp')
 $scope.activaeTokens=function(){
   activator.ActivatePurchaseOffline($scope.activation).then(function(activationResults){
     console.log(activationResults);
+    var csv = Papa.unparse(activationResults);
+    CsvEncoded=encodeURI(csv);
+    var newCsv=CsvEncoded.replace("%0D%0A", "\n");
+    newCsv=newCsv.replace("activations_id", "activations_id\n");
+    $scope.returnedData=csv;
+    var a = document.createElement('a');
+    console.log(newCsv);
+a.href     = 'data:attachment/csv;charset=utf-8,' + newCsv;
+a.target   ='_blank';
+a.download = 'keys.csv';
+a.innerHTML = "Click me to download the file.";
+a.click();
+    console.log(csv);
   });
 };
-        $scope.FetchData = function() {
-            viewData.getDataByToken($scope.user)
-                .catch(function(response) {
-                    $scope.messages = {
-                        error: Array.isArray(response.data) ? response.data : [response.data]
-                    };
-                });
-        };
-
-        $scope.SubmitChanges = function() {
-            viewData.getDataByToken($scope.user)
-                .then(function(response) {
-                    $scope.returnedDataString = JSON.stringify(response.data);
-                    $scope.returnedData = response.data;
-                    if ($scope.returnedDataString != "null")
-                        $scope.showDataTokenBy = true;
-                    else
-                        $scope.showDataTokenBy = false;
-                    console.log(JSON.stringify(response.data));
-                    $scope.messages = {
-                        success: [response.data]
-                    };
-                })
-                .catch(function(response) {
-                    $scope.messages = {
-                        error: Array.isArray(response.data) ? response.data : [response.data]
-                    };
-                });
-        };
 
 
 

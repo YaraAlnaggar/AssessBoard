@@ -5,6 +5,7 @@ angular.module('MyApp')
 
         $scope.purchaseExams=function(){
 purchase.PurchaseOffline($scope.purchaseRequest).then(function(requestMade){
+  $scope.Bindrequest=requestMade.status+" Request ID :"+requestMade.data.purchaseRequests_id ;
   console.log(requestMade);
 });
         };
