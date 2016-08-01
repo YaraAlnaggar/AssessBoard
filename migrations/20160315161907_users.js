@@ -60,8 +60,8 @@ exports.up = function(knex, Promise) {
             table.integer('PurchasedUnits');
             table.integer('ConsumedUnits');
             table.integer('DiscountRate');
-            table.integer('StartDate');
-            table.integer('ExpiryDate');
+            table.dateTime('StartDate');
+            table.dateTime('ExpiryDate');
             table.string('PaymentMethod');
             table.string('PromotionCode');
             table.boolean('isActivated');
@@ -76,7 +76,7 @@ exports.up = function(knex, Promise) {
             table.increments("id").primary();
             table.boolean("ApprovedByAssess");
             table.boolean("ApprovedByBank");
-            table.integer('ApprovalDate');
+            table.dateTime('ApprovalDate');
             table.boolean("RequestIsDone");
             table.integer('RequestDate');
 
@@ -95,7 +95,7 @@ exports.up = function(knex, Promise) {
             table.integer('RateGiven');
             table.integer('DefinedQuntity');
             table.integer('InitializeDate');
-            table.integer('ExpiryDate');
+            table.dateTime('ExpiryDate');
             table.string('DefinedService');
             table.integer('CompanyIdRestrictedTo');
             table.integer('NumberUsed');
@@ -157,7 +157,7 @@ exports.up = function(knex, Promise) {
         knex.schema.createTable('activations', function(table) {
             table.increments("id").primary();
             table.boolean("AssessmentModuleEnabled");
-            table.integer('ExpiryDate');
+            table.dateTime('ExpiryDate');
             table.string('Taken');
             table.integer('TimeStamp');
             table.integer('NumberOfTokensOrdered');
@@ -183,7 +183,7 @@ exports.up = function(knex, Promise) {
             table.string('FirstName');
             table.string('FamilyName');
             table.string('PersonalEmail').unique();
-            table.integer('Phone').unique();
+            table.string('Phone').unique();
             table.string('password');
             table.string('passwordResetToken');
             table.dateTime('passwordResetExpires');

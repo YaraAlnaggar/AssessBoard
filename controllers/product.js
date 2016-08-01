@@ -27,10 +27,21 @@ exports.addproduct = function(req, res) {
         ServiceName: req.body.ServiceName,
         Price: req.body.Price,
     }).save().then(function(product) {
-        res.json(product);
+        return res.json(product);
     }).catch(function(error) {
         console.log(error);
         return res.status(400).send();
     });
 
+};
+exports.getAllProducts= function(req,res){
+  if (req.tokenObject.level < 2500) return res.status(401).json({
+      msg: "you don't have the authority to do this action"
+  });
+  new product({}).fetchAll().then(function(AllProducts){
+    return res.json(AllProducts);
+  }).catch(function(error){
+    console.log(error);
+    return res.status(400).send();
+  });
 };

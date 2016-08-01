@@ -100,6 +100,9 @@ app.post("/admin/GetAllCompaines",userController.ensureAuthenticated,companyCont
 app.post("/activate", userController.ensureAuthenticated, activationController.activateTokens);
 app.post("/purchase", userController.ensureAuthenticated, purchaseRequestsController.requestPurchase);
 app.get("/reset", userController.ensureAuthenticated,companyController.resetCompanyID);
+
+
+app.get("/corp/Products", userController.ensureAuthenticated,productController.getAllProducts);
 app.get("/addAssessAccount",function(req,res){
   new company({
       CompanyName: "Assess-Indviduals",

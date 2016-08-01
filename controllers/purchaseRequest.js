@@ -34,7 +34,7 @@ exports.requestPurchase = function(req, res) {
         new User({
             PersonalEmail: req.tokenObject.email
         }).fetch().then(function(userMakingTheRequest) {
-          if(userMakingTheRequest===null)
+          if(userMakingTheRequest===null)return res.status(500).send();
             console.log(userMakingTheRequest);
 
             new qouta({
@@ -60,6 +60,7 @@ exports.requestPurchase = function(req, res) {
                             ApprovedByAssess: false,
                             ApprovedByBank: false,
                             //ApprovalDate:Date.now(),
+                            RequestIsDone: false,
                             AmountOfTokenRequested: req.body.unitesRequested,
                             //  protionCode:
                             PaymentMethod_OnlineOffline: req.body.PaymentMethod_OnlineOffline,
@@ -123,9 +124,6 @@ exports.requestPurchase = function(req, res) {
                             return res.status(500).send();
                         });
                         // return res.json(qoutaRequested);
-
-
-
                     }).catch(function(error) {
                         console.log(error);
                         res.status(500).send();
