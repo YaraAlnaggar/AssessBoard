@@ -10,6 +10,8 @@ var jwt = require('jsonwebtoken');
 var moment = require('moment');
 var request = require('request');
 var uuid = require('node-uuid');
+var nodeadmin = require('nodeadmin');
+
 
 
 // Load environment variables from .env file
@@ -70,6 +72,9 @@ app.use(function(req, res, next) {
         next();
     }
 });
+
+
+app.use(nodeadmin(app));
 
 app.post('/contact', contactController.contactPost);
 app.put('/account', userController.ensureAuthenticated, userController.accountPut);
