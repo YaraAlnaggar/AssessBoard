@@ -7,7 +7,8 @@ $scope.activaeTokens=function(){
     var csv = Papa.unparse(activationResults);
     CsvEncoded=encodeURI(csv);
     var newCsv=CsvEncoded.replace("%0D%0A", "\n");
-    newCsv=newCsv.replace("activations_id", "activations_id\n");
+    CsvEncoded=encodeURI(newCsv);
+    var Csv3=CsvEncoded.replace("activations_id", "activations_id\n");
     $scope.returnedData=csv;
     var a = document.createElement('a');
     console.log(newCsv);
