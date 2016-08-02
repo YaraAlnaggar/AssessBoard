@@ -19,7 +19,7 @@
           </div>
         </div>
         <div class="form-group">
-          <input type="text" name="productName" id="productName" placeholder="Exam Type" class="form-control" ng-model="purchaseRequest.productName" autofocus>
+          <select  name="productName" id="productName" placeholder="Exam Type" class="form-control" ng-options= "x.ServiceName for x in productsNames" ng-model="purchaseRequest.productName" autofocus>
         </div>
         <div class="form-group">
           <label for="name">Qouta Type </label>

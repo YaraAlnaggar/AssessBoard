@@ -9,6 +9,9 @@ angular.module('MyApp')
       },
       ActivatePurchaseOffline: function(data) {
         return $http.post('/activate',data);
+      },
+      RetrieveProducts: function(data){
+        return $http.get('/corp/Products',data);
       }
     };
   });

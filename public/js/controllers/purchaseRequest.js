@@ -9,6 +9,10 @@ purchase.PurchaseOffline($scope.purchaseRequest).then(function(requestMade){
   console.log(requestMade);
 });
         };
+        purchase.RetrieveProducts().then(function(productList){
+          $scope.productsNames= productList.data;
+
+        })
 
         $scope.FetchData = function() {
             viewData.getDataByToken($scope.user)
